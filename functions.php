@@ -74,15 +74,16 @@
 		
 	}
 	
+	// DATA.PHP
 	
 	function Books ($author, $title) {
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 	
-		$stmt = $mysqli->prepare("INSERT INTO Books (author, title, user) VALUES (?, ?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO Books (author, title) VALUES (?, ?)");
 		echo $mysqli->error;
 		
-		$stmt->bind_param("ssi", $author, $title, $_SESSION["userId"]);
+		$stmt->bind_param("ss", $author, $title);
 		
 		if ($stmt->execute()) {
 			echo "Salvestamine õnnestus";
@@ -95,10 +96,10 @@
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 	
-		$stmt = $mysqli->prepare("SELECT id, author, title, created FROM Books WHERE user=?");
+		$stmt = $mysqli->prepare("SELECT id, author, title, created FROM Books");
 		
 		echo $mysqli->error;
-		$stmt->bind_param("i",$_SESSION["userId"]);
+
 		$stmt->bind_result($id, $author, $title, $created);
 		$stmt->execute();
 		
@@ -134,8 +135,9 @@
 		
 	}
 	
+	// USER.PHP
 	
-	function saveFavorite ($favorites) {
+	function saveFavorite ($favorite) {
 		
 		$database = "if16_karoku";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
@@ -159,8 +161,8 @@
 	
 	function saveUserFavorite ($favorite_id) {
 		
-		echo "Lemmik raamat: ".$favorite_id."<br>";
- 		echo "Kasutaja: ".$_SESSION["userId"]."<br>";
+		//echo "Lemmik raamat: ".$favorite_id."<br>";
+ 		//echo "Kasutaja: ".$_SESSION["userId"]."<br>";
 		
 		$database = "if16_karoku";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
@@ -187,11 +189,10 @@
 		
 		$stmt->bind_param("ii", $_SESSION["userId"],$favorite_id);
 		
-		if($stmt->execute()) {
+		/*if($stmt->execute()) {
 			echo "Salvestamine õnnestus";
 		} else {
-		 	echo "ERROR ".$stmt->error;
-		}
+		 	echo "ERROR ".$stmt->error;}*/ //proovimiseks, kas töötab
 		
 		$stmt->close();
 		$mysqli->close();

@@ -83,17 +83,12 @@
         	
         	foreach($favorites as $i){
         		
-        		
         		$listHtml .= "<option value='".$i->id."'>".$i->favorite."</option>";
-        
         	}
-        	
-        	echo $listHtml;
-            
+        	echo $listHtml;   
         ?>
     </select>
     	
-	
 	<input type="submit" value="Lisa">
 	
 </form>
