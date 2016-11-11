@@ -1,0 +1,10 @@
+table {
+    width: 100%;
+    text-align: center;
+    vertical-align: center;
+}
+
+tr {
+    height: 50px;
+    border-bottom: 1px solid black;
+}
