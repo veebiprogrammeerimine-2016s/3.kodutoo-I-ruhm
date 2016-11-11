@@ -133,6 +133,140 @@
 		return $input;
 		
 	}
+	
+	
+	function saveFavorite ($favorites) {
+		
+		$database = "if16_karoku";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 
+		$stmt = $mysqli->prepare("INSERT INTO favorites (favorite) VALUES (?)");
+	
+		echo $mysqli->error;
+		
+		$stmt->bind_param("s", $favorite);
+		
+		if($stmt->execute()) {
+			echo "salvestamine õnnestus";
+		} else {
+		 	echo "ERROR ".$stmt->error;
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+	}
+	
+	function saveUserFavorite ($favorite_id) {
+		
+		echo "Lemmik raamat: ".$favorite_id."<br>";
+ 		echo "Kasutaja: ".$_SESSION["userId"]."<br>";
+		
+		$database = "if16_karoku";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+		//kas on juba selline raamat olemas
+		$stmt = $mysqli->prepare("SELECT id FROM user_favorites WHERE user_id=? AND favorite_id=?");
+		$stmt->bind_param("ii", $_SESSION["userId"],$favorite_id);
+		$stmt->execute();
+		
+		if ($stmt->fetch()) {
+			//oli olemas
+			echo "Juba olemas";
+			
+			//ei jätka salvestamisega
+			return;
+		}
+		$stmt->close();
+		//jätkan salvestamisega..
+		
+
+		$stmt = $mysqli->prepare("INSERT INTO user_favorites (user_id, favorite_id) VALUES (?, ?)");
+	
+		echo $mysqli->error;
+		
+		$stmt->bind_param("ii", $_SESSION["userId"],$favorite_id);
+		
+		if($stmt->execute()) {
+			echo "Salvestamine õnnestus";
+		} else {
+		 	echo "ERROR ".$stmt->error;
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+	}
+	
+	function getAllFavorites() {
+		
+		$database = "if16_karoku";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+		$stmt = $mysqli->prepare("
+			SELECT id, favorite
+			FROM favorites
+		");
+		echo $mysqli->error;
+		
+		$stmt->bind_result($id, $favorite);
+		$stmt->execute();
+		
+		
+		//tekitan massiivi
+		$result = array();
+		
+		// tee seda seni, kuni on rida andmeid
+		// mis vastab select lausele
+		while ($stmt->fetch()) {
+			
+			//tekitan objekti
+			$i = new StdClass();
+			
+			$i->id = $id;
+			$i->favorite = $favorite;
+		
+			array_push($result, $i);
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+		return $result;
+	}
+	
+	function getAllUserFavorites() {
+		
+		$database = "if16_karoku";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+		$stmt = $mysqli->prepare("
+		SELECT favorite FROM favorites JOIN user_favorites
+		ON favorites.id=user_favorites.favorite_id 
+		WHERE user_favorites.user_id = ?");
+		
+		echo $mysqli->error;
+		
+		$stmt->bind_param("i", $_SESSION["userId"]);
+		
+		$stmt->bind_result($favorite);
+		$stmt->execute();
+	
+		$result = array();
+
+		while ($stmt->fetch()) {
+			
+			$i = new StdClass();
+	
+			$i->favorite = $favorite;
+		
+			array_push($result, $i);
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+		return $result;
+	}
+	
 ?>
-

@@ -24,7 +24,7 @@
 			!empty($_POST["author"]) &&
 			!empty($_POST["title"])
 		) {
-			Books($_POST["author"], $_POST["title"]);
+			Books(cleanInput($_POST["author"]), cleanInput($_POST["title"]));
 			
 		}
 	
@@ -54,13 +54,10 @@
 	
 	$people = AllBooks();
 	
-	//echo "<pre>";
-	//var_dump($people);
-	//echo "</pre>";
 ?>
 <h1>Andmed</h1>
 <p> 
-	Tere tulemast <?=$_SESSION["email"];?>!
+	Tere tulemast <a href="user.php"><?=$_SESSION["email"];?>!</a>
 	<a href="?logout=1">Logi välja</a>
 </p>
 
@@ -103,21 +100,3 @@
 	echo $html;
 	
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

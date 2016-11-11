@@ -87,9 +87,9 @@
 		empty($signupPasswordError)  
 	) {
 			//näitab, millised andmed kasutaja sisestas: email, parool, räsi
-		echo "Salvestan...<br>";
-		echo "kasutajatunnus ".$signupUsername."<br>";
-		echo "email ".$signupEmail."<br>";
+		//echo "Salvestan...<br>";
+		//echo "kasutajatunnus ".$signupUsername."<br>";
+		//echo "email ".$signupEmail."<br>";
 		
 		$signupPassword = hash("sha512", $_POST["signupPassword"]);
 		
