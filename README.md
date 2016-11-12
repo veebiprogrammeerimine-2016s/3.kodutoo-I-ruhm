@@ -1,10 +1,13 @@
-# 3. kodutoo (I rühm)
+# 2. kodutoo (I rühm)
 
 ## Kirjeldus
-1. Lähtu ülesannete puhul alati oma ideest ning ole loominguline
-  * AB'i kirjeid saab muuta ja kustutada (arhiveerida)
-  * lehel töötab otsing ja tulemusi saab sorteerida 
-  * abi saad tunnitöödest 
+
+1. Võimalda oma lehel kasutajat luua ja sisselogida.
+1. Kontrolli kõik kasutaja loomise ja sisselogimise vormi väljad, kui on tühjad, siis anna veateade!
+1. Veendu, et mingit jama ei saaks andmebaasi salvestada (nt JavaScript). 
+1. Veendu, et väljad jääksid täidetud, kui saadetakse vorm osaliselt.
+1. Võimalda salvestada andmebaasi kirjeid oma ideele vastavalt (ainult sisselogitud kasutaja peaks saama salvestada).
+1. Näita salvestatud kirjeid (nt tabeli kujul)
 
 **OLULINE! ÄRA POSTITA GITHUBI GREENY MYSQL PAROOLE.** Selleks toimi järgmiselt:
   * loo eraldi fail `config.php`. Lisa sinna kasutaja ja parool ning tõsta see enda koduse töö kaustast ühe taseme võrra väljapoole
