@@ -126,7 +126,7 @@
 					<input type="radio" name="grade" value="2">2</input>
 					<input type="radio" name="grade" value="3">3</input>
 					<input type="radio" name="grade" value="4">4</input>
-					<input type="radio" name="grade" value="5">5</input>
+					<input type="radio" name="grade" value="5" checked>5</input>
 			
 			<br>
             <p class="errors"><?php echo $commentError; ?></p>
