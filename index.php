@@ -8,7 +8,7 @@
  * @author Alar Aasa <alar@alaraasa.ee>
  */
 require_once("config.php");
-require_once("functions.php");
+//require_once("functions.php");
 
 $createBoardError = "";
 $createBoard = "";
@@ -22,7 +22,7 @@ if (isset($_POST["createBoardName"])) {
         $createBoardError = "Board name cannot be empty.";
     }
     $boardName = $_POST["createBoardName"];
-    if (createBoard($boardName)) {
+    if ($Board->create($boardName)) {
         echo "Board " . $boardName . " created successfully!";
     }
     echo "<br>";
@@ -30,12 +30,8 @@ if (isset($_POST["createBoardName"])) {
 
 }
 
-$tableList = array();
-
-$mysqli = connectDB();
-sqlConnectTest($mysqli);
-
-$boardList = getTables();
+$boardList = array();
+$boardList = $Board->get();
 $html = "";
 foreach ($boardList as $p) {
     $html .= "<a href='index.php?name=" . $p->name . "'>" . $p->name . "</a> | ";
@@ -45,9 +41,9 @@ echo "<br><br>";
 
 
 if (isset($_GET["name"])) {
-    require("board.php");
+    require("page/board.php");
 } else {
-    require("createboard.php");
+    require("page/createboard.php");
 }
 ?>
 

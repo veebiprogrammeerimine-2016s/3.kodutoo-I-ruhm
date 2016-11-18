@@ -3,30 +3,14 @@
  * @author Alar Aasa <alar@alaraasa.ee>
  * Public configuration file
  */
-require_once("../../config.php");
+require_once("/home/alaraasa/config.php");
+require_once("class/Helper.class.php");
+require_once("class/Post.class.php");
+require_once("class/Board.class.php");
 
-function connectDB()
-{
-    $mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], "if16_alaraasa_board");
-    return $mysqli;
-}
-
-function sqlConnectTest($mysqli)
-{
-    if ($mysqli->connect_errno) {
-        echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-    }
-}
-
-function issetAndNotEmpty($var)
-{
-    if (isset ($var)) {
-        if (empty ($var)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-}
+$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], "if16_alaraasa_board");
+$Helper = new Helper($mysqli);
+$Board = new Board($mysqli);
+$Post = new Post($mysqli);
 
 ?>
