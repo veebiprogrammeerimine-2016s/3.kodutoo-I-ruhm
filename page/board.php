@@ -10,6 +10,13 @@ $postContentError = "";
 $postUrlError = "";
 $postName = $postContent = $postImage = $postPassword = "";
 
+if (isset $_GET["sortby"]){
+	$sortby = $_GET["sortby"];
+}
+if ($sortby != "ASC" || $sortby != "DESC"){
+	$sortby = "ASC";
+}
+
 //Board exists check
 $boardList = array();
 $boardList = $Board->get();
@@ -99,16 +106,62 @@ if (empty($wrongBoardError)) {
         <br>
         ';
 }
+?>
+<form method="POST">
+    <label>Search posts
+        <input type=text name="search">
+        <input type=submit value="Search">
+    </label>
+</form>
+
+<?php
 
 if (empty($wrongBoardError)) {
-    $post = $Post->getAll($boardName);
+    if (isset($_POST["search"]) && !empty($_POST["search"])){
+        $search = $_POST["search"];
+    } else {
+        $search = NULL;
+    }
+    if (isset($_GET["sort"]){
+		$sort = $_GET["sort"];
+	} else {
+		$sort = "";
+	}
+    $post = $Post->getAll($boardName, $search, $sort, $sortby);
+	
     $html = "<table>";
     $html .= "<tr>";
-    $html .= "<th>#</th>";
-    $html .= "<th>Image</th>";
-    $html .= "<th>Name</th>";
-    $html .= "<th>Post</th>";
-    $html .= "<th>Created</th>";
+	//existing sorting
+	if ($sortby == "ASC"){
+		$sortby = "DESC";
+	} else {
+		$sortby = "ASC";
+	}
+	
+	//new sortings
+	if ($_GET["sort"] == "id"){
+		$html .= "<th><a href='?name=" . $boardName . "&sort=id&sortby=".$sortby.">#</a></th>";
+	} else {
+		$html .= "<th><a href='?name=" . $boardName . "&sort=id&sortby=DESC>#</a></th>";
+	}
+
+    $html .= "<th>Image</a></th>"; //Can't sort by image
+	
+	if ($_GET["sort"] == "id"){
+		$html .= "<th><a href='?name=" . $boardName . "&sort=name&sortby=".$sortby.">name</a></th>";
+	} else {
+		$html .= "<th><a href='?name=" . $boardName . "&sort=name&sortby=DESC>Name</a></th>";
+	}
+    //$html .= "<th>Name</th>";
+	
+    $html .= "<th>Post</th>"; //Not meant for sorting, too large and too many
+	
+	if ($_GET["sort"] == "post"){
+		$html .= "<th><a href='?name=" . $boardName . "&sort=created&sortby=".$sortby.">Created</a></th>";
+	} else {
+		$html .= "<th><a href='?name=" . $boardName . "&sort=created&sortby=DESC>Created</a></th>";
+	}
+    //$html .= "<th>Created</th>";
     $html .= "<th>Edit</th>";
     $html .= "</tr>";
     foreach ($post as $p) {

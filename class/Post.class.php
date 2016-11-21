@@ -84,13 +84,27 @@ class Post {
 
     //Returns all post data necessary for displaying it for users.
 	//getAllPosts	
-	function getAll($board)
+	function getAll($board, $search, $sort, $sortBy)
 	{
-		//$mysqli = $this->connection;
+		$searchQuery = $sortQuery = NULL;
+		if ($sortBy == "ASC" || $sortBy == "DESC"){
+			if (in_array($sort, $sortValues)){
+				$sortQuery = "ORDER BY $sort $sortBy";
+			}
+		} else {
+			echo "Cannot sort by ". $sortBy."!";
+		}
+		
+		if ($search !=" "){
+			$search = $this->Helper->cleanInput($search);
+			$searchQuery = "AND (id = '%$search%' OR name = '%$search%' OR post = '%$search%')";
+		}
 		$stmt = $this->connection->prepare("
 			SELECT id, name, text, imgdir, created
 			FROM $board
 			WHERE trashed != 1
+			$searchQuery
+			$sortQuery
 			");
 		$stmt->bind_result($id, $name, $text, $imgDir, $created);
 		$stmt->execute();
