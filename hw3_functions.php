@@ -77,84 +77,37 @@
 		return $error;
 	}
 	
-	function savePeople ($gender, $color){
+	function createNewPost($subject, $content, $user, $email){
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		
-		$stmt = $mysqli->prepare("INSERT INTO clothingOnTheCampus(gender, color) VALUES(?,?)");
+		$stmt = $mysqli->prepare("INSERT INTO topics(subject, content, user, email) VALUES(?,?,?,?)");
 		echo $mysqli->error;
 		
-		$stmt->bind_param("ss", $gender, $color); 
+		$stmt->bind_param("ssss", $subject, $content, $user, $email); 
 		
 		if($stmt->execute()) {
-			echo "salvestamine õnnestus<br>";
+			echo "Salvestamine õnnestus.<br>";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
 	}
 	
-	function getAllPeople (){
-		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		
-		$stmt = $mysqli->prepare("
-			SELECT id, gender, color, created
-			FROM clothingOnTheCampus
-		");
-		echo $mysqli->error;
-		
-		$stmt->bind_result ($id, $gender, $color, $created);
-		$stmt-> execute();
-		
-		// array ("Mariann", "M") massiiv
-		$result = array();
-		
-		//seni kuni on üks rida andmeid saada (10 rida = 10 korda)
-		while ($stmt->fetch()){	
-			$person = new StdClass();
-			$person->id = $id;
-			$person->gender = $gender;
-			$person->clothingColor = $color;
-			$person->created = $created;
-		
-			//echo $color."<br>";	
-			array_push ($result, $person);
-		}
-		$stmt->close();
-		$mysqli->close();
-		
-		return $result;
-	}
-	
-	function createNewPost($subject, $user, $email){
+	function createNewReply($content, $subject_id, $user, $email){
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		
-		$stmt = $mysqli->prepare("INSERT INTO topics(subject, user, email) VALUES(?,?,?)");
+		$stmt = $mysqli->prepare("INSERT INTO replies(content, user, email, topic_id) VALUES(?,?,?,?)");
 		echo $mysqli->error;
 		
-		$stmt->bind_param("sss", $subject, $user, $email); 
+		$stmt->bind_param("sssi", $content, $user, $email, $subject_id); 
 		
 		if($stmt->execute()) {
-			echo "salvestamine õnnestus<br>";
+			echo "Vastus on lisatud.<br><br>";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
-	}
-	
-	function createNewContent($content, $subject, $user, $email){
 		
-		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-		
-		$stmt = $mysqli->prepare("INSERT INTO replies(content, subject, user, email) VALUES(?,?,?,?)");
-		echo $mysqli->error;
-		
-		$stmt->bind_param("ssss", $content, $subject, $user, $email); 
-		
-		if($stmt->execute()) {
-			echo "salvestamine õnnestus<br>";
-		} else {
-			echo "ERROR".$stmt->error;
-		}
 	}
 	
 	function addPostToArray (){
@@ -188,16 +141,19 @@
 		return $result;
 	}
 	
-	function addContentToArray (){
+	function addReplyToArray ($topic_id){
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		
 		$stmt = $mysqli->prepare("
-			SELECT id, content, subject
+			SELECT id, content, created, user, email
 			FROM replies
+			WHERE topic_id=?
 		");
 		echo $mysqli->error;
 		
-		$stmt->bind_result($id, $content, $topic);
+		$stmt->bind_param("i", $topic_id);
+		
+		$stmt->bind_result($id, $content, $created, $user, $email);
 		$stmt-> execute();
 		
 		$result = array();
@@ -206,7 +162,9 @@
 			$reply = new StdClass();
 			$reply->id = $id;
 			$reply->content = $content;
-			$reply->topic = $topic;
+			$reply->created = $created;
+			$reply->user = $user;
+			$reply->email = $email;
 		
 			array_push ($result, $reply);
 		}
@@ -225,4 +183,42 @@
 		return $input;
 		
 	}
+	
+	function getTopic($topic_id){
+		
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$stmt = $mysqli-> prepare("SELECT subject, content, created, user, email FROM topics WHERE id=? ");
+		
+		echo $mysqli->error;
+
+		$stmt->bind_param("i", $topic_id);
+		$stmt->bind_result($subject, $content, $created, $user, $email);
+		$stmt->execute();
+		
+		//tekitan objekti
+		$topic = new Stdclass();
+		
+		//saime ühe rea andmeid
+		if($stmt->fetch()){
+			// saan siin alles kasutada bind_result muutujaid
+			$topic->subject = $subject;
+			$topic->content = $content;
+			$topic->created = $created;
+			$topic->user = $user;
+			$topic->email = $email;
+			
+		}else{
+			// ei saanud rida andmeid kätte
+			// sellist id'd ei ole olemas
+			// see rida võib olla kustutatud
+			header("Location: hw3_data.php");
+			exit();
+		}
+		
+		$stmt->close();
+		//$mysqli->close();
+		
+		return $topic;
+	}	
+	
 ?>

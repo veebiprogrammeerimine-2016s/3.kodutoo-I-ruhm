@@ -48,15 +48,12 @@
 		empty($newHeadlineError)&&
 		empty($newContentError)
 		){
-			createNewPost (cleanInput($_POST["headline"]), $_SESSION["firstName"], $_SESSION["email"]);
-			createNewContent (cleanInput($_POST["content"]), cleanInput($_POST["headline"]), $_SESSION["firstName"], $_SESSION["email"]); 	
+			createNewPost (cleanInput($_POST["headline"]), cleanInput($_POST["content"]), $_SESSION["firstName"], $_SESSION["email"]);	
 			header("Location:hw3_data.php");
 			exit();
 	} 
 	
 	$topics = addPostToArray();
-	$replies = addContentToArray();
-	
 ?>
 
 <h1>Data</h1>
@@ -91,7 +88,7 @@
 		$html .= "<tr>";
 			//$html .= "<td>".$t->id."</td>";
 			//$html .= "<td> <a href='#heading' onclick='changeTitle()'>".$t->subject."</a></td>";
-			$html .= "<td> ".$t->subject."</a></td>";
+			$html .= "<td><a href='hw3_topics.php?id=".$t->id."'>".$t->subject."</a></td>";
 			$html .= "<td>".$t->user."</td>";
 			$html .= "<td>".$t->email."</td>";
 			$html .= "<td>".$t->created."</td>";
@@ -104,7 +101,8 @@
 	$headingName = "";
 	//$html = "<table border='1'>";
 	//$html = "<table border=\"1\">"; \ ei lõhu ära 
-	$html = "<table>";
+	
+	/*$html = "<table>";
 		$html .= "<tr>"; 
 			$html .= "<th>Teema</th>";
 			$html .= "<th>Sisu</th>";
@@ -118,12 +116,12 @@
 	} 
 	$html .= "</table>";
 	//echo $html;
-	$contentTable = $html;
+	$contentTable = $html;*/
 ?>
 <br>
-<button onclick="addContent()">Näita teemade sisu</button>
+<!--<button onclick="addContent()">Näita teemade sisu</button>
 <button onclick="removeContent()">Peida teemade sisu</button>
-</p>
+</p>-->
 
 <h1 id="heading"><span id="newHeading"></span></h1>
 <p id="content">
