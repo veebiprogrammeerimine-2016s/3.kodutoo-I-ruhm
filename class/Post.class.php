@@ -8,9 +8,7 @@ class Post {
 
 
 
-	//editPost
     //Image or text can be empty. Field check done in boards.php
-
 	function edit($board, $id, $text, $image)
 	{	
 		$mysqli = $this->connection;
@@ -56,9 +54,7 @@ class Post {
 		}
 	}
 
-	//editGetPost
     //Used for displaying current post values in the edit window.
-
 	function get($board, $id)
 	{
 		//$mysqli = $this->connection;
@@ -83,21 +79,27 @@ class Post {
 	}
 
     //Returns all post data necessary for displaying it for users.
-	//getAllPosts	
 	function getAll($board, $search, $sort, $sortBy)
 	{
 		$searchQuery = $sortQuery = NULL;
+
+		$sortValues = ["id", "name", "created"];
+
+		
 		if ($sortBy == "ASC" || $sortBy == "DESC"){
 			if (in_array($sort, $sortValues)){
 				$sortQuery = "ORDER BY $sort $sortBy";
 			}
 		} else {
+			$sortQuery = NULL;
 			echo "Cannot sort by ". $sortBy."!";
 		}
 		
-		if ($search !=" "){
+		if ($search !=" " && $search != "" && $search != NULL){
 			$search = $this->Helper->cleanInput($search);
-			$searchQuery = "AND (id = '%$search%' OR name = '%$search%' OR post = '%$search%')";
+			$searchQuery = "AND (id LIKE ('%$search%') OR name LIKE ('%$search%') OR text LIKE ('%$search%') )";
+		} else {
+			$searchQuery = NULL;
 		}
 		$stmt = $this->connection->prepare("
 			SELECT id, name, text, imgdir, created
@@ -123,6 +125,7 @@ class Post {
 		return $result;
 	}
 
+	//Archive post
 	function delete($board, $id)
 	{
     //Does not remove posts, just trashes them

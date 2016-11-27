@@ -10,10 +10,12 @@ $postContentError = "";
 $postUrlError = "";
 $postName = $postContent = $postImage = $postPassword = "";
 
-if (isset $_GET["sortby"]){
+if (isset($_GET["sortby"])){
 	$sortby = $_GET["sortby"];
-}
-if ($sortby != "ASC" || $sortby != "DESC"){
+    if ($sortby != "ASC" && $sortby != "DESC"){
+        $sortby = "ASC";
+    }
+} else {
 	$sortby = "ASC";
 }
 
@@ -66,14 +68,14 @@ if (empty($wrongBoardError) &&
     empty($postUrlError) &&
     (isset($_POST["post"]) && !empty($_POST["post"])) ||
     (isset($_POST["image"]) && !empty($_POST["image"]))
-) {
+    ) {
     $Post->create($boardName, $postName, $postPassword, $postContent, $postImage);
     //remove POST for easy user refresh, POST is unnecessary after sending it once.
     echo "
     <script>
         window.location = window.location;
     </script>
-";
+    ";
 } else if (isset($_POST["post"]) || isset($_POST["imgDir"])) {
     echo "Post not created. Check the fields for any errors.";
 }
@@ -81,7 +83,8 @@ if (empty($wrongBoardError) &&
 
 if (empty($wrongBoardError)) {
     echo '
-    <h1>' . $boardName . '</h1>
+    <h1>' . $boardName . '
+    </h1>
     <form method="post">
         <label>Name:
             <input name="name" type="text">
@@ -89,98 +92,104 @@ if (empty($wrongBoardError)) {
         <br>
         <label>Image URL:
             <input name="image" name="url" type="url">
-            <?=$postUrlError?>
+            '.$postUrlError.'
         </label>
         <br>
         <label>Post:
             <textarea name="post" style="width:250px;height:150px;"></textarea> </label>
-            <br>
-            <label>Password:
-                <input name="password" type="password">
-            </label>
-            <br>
-            <input type="submit" value="Create post">
+        <br>
+        <label>Password:
+            <input name="password" type="password">
+        </label>
+        <br>
+        <input type="submit" value="Create post">
         </form>
         <br>
         <br>
         <br>
         ';
-}
-?>
-<form method="POST">
-    <label>Search posts
-        <input type=text name="search">
-        <input type=submit value="Search">
-    </label>
-</form>
-
-<?php
-
-if (empty($wrongBoardError)) {
-    if (isset($_POST["search"]) && !empty($_POST["search"])){
-        $search = $_POST["search"];
-    } else {
-        $search = NULL;
     }
-    if (isset($_GET["sort"]){
-		$sort = $_GET["sort"];
-	} else {
-		$sort = "";
-	}
-    $post = $Post->getAll($boardName, $search, $sort, $sortby);
-	
+    ?>
+    <form method="POST">
+        <label>Search posts
+            <input type=text name="search">
+        </label>
+        <input type=submit value="Search">
+    </form>
+
+    <?php
+
+    if (empty($wrongBoardError)) {
+        if (isset($_POST["search"]) && !empty($_POST["search"])){
+            $search = $_POST["search"];
+        } else {
+            $search = NULL;
+        };
+
+        if (isset($_GET["sort"])){
+          $sort = $_GET["sort"];
+      } else {
+          $sort = NULL;
+      };
+      $post = $Post->getAll($boardName, $search, $sort, $sortby);
+
+	//existing sorting
+    if ($sortby == "DESC"){
+    	$sortby = "ASC";
+    } else {
+    	$sortby = "DESC";
+
+    }
+
+      echo "\n" . $sort . " | " . $sortby;
+
     $html = "<table>";
     $html .= "<tr>";
-	//existing sorting
-	if ($sortby == "ASC"){
-		$sortby = "DESC";
-	} else {
-		$sortby = "ASC";
-	}
-	
-	//new sortings
-	if ($_GET["sort"] == "id"){
-		$html .= "<th><a href='?name=" . $boardName . "&sort=id&sortby=".$sortby.">#</a></th>";
-	} else {
-		$html .= "<th><a href='?name=" . $boardName . "&sort=id&sortby=DESC>#</a></th>";
-	}
+
+    if (isset($_GET["sort"]) && $_GET["sort"] == "id"){
+      $html .= "<th><a href='?name=$boardName&sort=id&sortby=$sortby'>#</a></th>";
+  } else {
+      $html .= "<th><a href='?name=$boardName&sort=id&sortby=DESC'>#</a></th>";
+  }
 
     $html .= "<th>Image</a></th>"; //Can't sort by image
-	
-	if ($_GET["sort"] == "id"){
-		$html .= "<th><a href='?name=" . $boardName . "&sort=name&sortby=".$sortby.">name</a></th>";
-	} else {
-		$html .= "<th><a href='?name=" . $boardName . "&sort=name&sortby=DESC>Name</a></th>";
-	}
-    //$html .= "<th>Name</th>";
-	
+
+
+    if (isset($_GET["sort"]) && $_GET["sort"] == "name"){
+      $html .= "<th><a href='?name=$boardName&sort=name&sortby=$sortby'>Name</a></th>";
+  } else {
+      $html .= "<th><a href='?name=$boardName&sort=name&sortby=DESC'>Name</a></th>";
+  }
+
     $html .= "<th>Post</th>"; //Not meant for sorting, too large and too many
-	
-	if ($_GET["sort"] == "post"){
-		$html .= "<th><a href='?name=" . $boardName . "&sort=created&sortby=".$sortby.">Created</a></th>";
-	} else {
-		$html .= "<th><a href='?name=" . $boardName . "&sort=created&sortby=DESC>Created</a></th>";
-	}
-    //$html .= "<th>Created</th>";
-    $html .= "<th>Edit</th>";
-    $html .= "</tr>";
-    foreach ($post as $p) {
-        $html .= "<tr>";
-        $html .= "<td>" . $p->id . "</td>";
-        if ($p->imgdir == " " || $p->imgdir == "") {
-            $html .= "<td></td>";
-        } else {
-            $html .= "'<td><a href='" . $p->imgdir .
-                "'><img src='" . $p->imgdir . "' height='100' width='auto'>" . "</td></a>";
-        }
-        $html .= "<td>" . $p->name . "</td>";
-        $html .= "<td>" . $p->text . "</td>";
-        $html .= "<td>" . $p->created . "</td>";
-        $html .= "<td>" . "<a href='page/editpost.php?name=" . $boardName . "&id=" . $p->id . "' target='_blank'>Edit post</a></td>";
-        $html .= "</tr>";
+
+    if (isset($_GET["sort"]) && $_GET["sort"] == "created"){
+      $html .= "<th><a href='?name=$boardName&sort=created&sortby=$sortby'>Created</a></th>";
+  } else {
+      $html .= "<th><a href='?name=$boardName&sort=created&sortby=DESC'>Created</a></th>";
+  }
+   
+
+  $html .= "<th>Edit</th>";
+  $html .= "</tr>";
+  foreach ($post as $p) {
+    $html .= "<tr>";
+    $html .= "<td>" . $p->id . "</td>";
+    if ($p->imgdir == " " || $p->imgdir == "") {
+        $html .= "<td></td>";
+    } else {
+        $html .= "'<td><a href='" . $p->imgdir .
+        "'><img src='" . $p->imgdir . "' height='100' width='auto'>" . "</td></a>";
     }
-    $html .= "</table>";
-    echo $html;
+    $html .= "<td>" . $p->name . "</td>";
+    $html .= "<td>" . $p->text . "</td>";
+    $html .= "<td>" . $p->created . "</td>";
+    $html .= "<td>" . "<a href='page/editpost.php?name=" . $boardName . "&id=" . $p->id . "' target='_blank'>Edit post</a></td>";
+    $html .= "</tr>";
+}
+
+$html .= "</table>";
+echo $html;
 } else {
     echo $wrongBoardError;
 }
