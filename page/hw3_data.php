@@ -95,7 +95,7 @@
 		$html .= "<tr>";
 			//$html .= "<td>".$t->id."</td>";
 			//$html .= "<td> <a href='#heading' onclick='changeTitle()'>".$t->subject."</a></td>";
-			$html .= "<td><a href='hw3_topics.php?id=".$t->id."'>".$t->subject."</a></td>";
+			$html .= "<td><a href='hw3_topics.php?id=".$t->id."' style='text-decoration:none'>".$t->subject."</a></td>";
 			$html .= "<td>".$t->user."</td>";
 			$html .= "<td>".$t->email."</td>";
 			$html .= "<td>".$t->created."</td>";

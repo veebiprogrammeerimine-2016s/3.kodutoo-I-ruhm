@@ -53,5 +53,27 @@
 		return $result;
 	}
 	
+	function checkUser($topic_id, $user_id) {
+		$stmt = $this->connection-> prepare("SELECT content FROM replies WHERE topic_id=? and user_id=?");
+		
+		echo $this->connection->error;
+		
+		$stmt->bind_param("ii", $topic_id, $user_id);
+		$stmt->bind_result($content);
+		$stmt->execute();
+		
+		$change_reply = "";
+		
+		if($stmt->fetch()){
+			
+			//panen hiljem reply_id juurde
+			$change_reply = "<a href='hw3_edit.php?id=$topic_id&change=true' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
+		
+		}
+		
+		$stmt->close();
+		return $change_reply;
+	}
+	
 }
 ?>

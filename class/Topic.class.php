@@ -25,6 +25,7 @@
 		$stmt = $this->connection->prepare("
 			SELECT id, subject, created, user, email
 			FROM topics
+			WHERE deleted IS NULL 
 		");
 		echo $this->connection->error;
 		
@@ -52,7 +53,7 @@
 	
 	function get($topic_id){
 		
-		$stmt = $this->connection-> prepare("SELECT subject, content, created, user, email FROM topics WHERE id=? ");
+		$stmt = $this->connection-> prepare("SELECT subject, content, created, user, email FROM topics WHERE id=? AND deleted IS NULL");
 		
 		echo $this->connection->error;
 
@@ -95,17 +96,30 @@
 		$stmt->bind_result($subject, $content);
 		$stmt->execute();
 		
-		$button = "";
+		$del_topic = "";
 		
 		if($stmt->fetch()){
 		
-			$button = "<button type='delete_button'>Kustuta oma teema</button><br><br>";
-			//echo $button;
+			$del_topic = "<a href='hw3_topics.php?id=$topic_id&delete=true' style='text-decoration:none'>Kustuta oma teema</a>";
+			//echo $del_topic;
 		
 		}
 		
 		$stmt->close();
-		return $button;
+		return $del_topic;
+	}
+	
+	function del($topic_id){
+		$stmt = $this->connection->prepare("UPDATE topics SET deleted=NOW() WHERE id=? AND deleted IS NULL");
+ 		$stmt->bind_param("i",$topic_id);
+		
+		// kas õnnestus salvestada
+ 		if($stmt->execute()){
+ 			// õnnestus
+ 			echo "Kustutamine õnnestus!";
+ 		}
+ 		
+ 		$stmt->close();
 	}
 }
 ?>
