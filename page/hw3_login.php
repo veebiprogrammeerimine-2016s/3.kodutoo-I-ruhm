@@ -152,13 +152,7 @@
 			$notice= $User->login($Helper->cleanInput($_POST["loginEmail"]), $Helper->cleanInput($_POST["loginPassword"])); //functions error kandus üle notice muutujasse login funktsiooniga
 		}
 ?>
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Sisselogimise lehekülg</title>
-	</head>
-	<body>
+<?php require("../header.php")?>
 		<h1>Logi sisse</h1>	
 		
 		<form method="POST">
@@ -219,5 +213,4 @@
 			<input type="submit" value = "Loo kasutaja">
 		</form>
 		 <!--Mvp ideeks on üldine foorum, kuhu saab postitada erinevaid teemasid ning kommenteerida olemasolevaid. Vastates teiste kasutajate teemadele saab koguda punkte ning neid kasutada oma teemadele "high priority" märkimisel või toodete/autasude lunastamisel. "High priority" eest saab oma teema tõsta teiste seast esile/ettepoole ning sellele motiveerib rohkem vastama, kuna võimalus on teenida rohkem punkte. Väga originaalset ideed hetkel ei ole, aga ehk tuleb teostamise käigus ning võib-olla idee ka muutub natukene.-->
-	</body>
-</html>
+<?php require("../footer.php")?>

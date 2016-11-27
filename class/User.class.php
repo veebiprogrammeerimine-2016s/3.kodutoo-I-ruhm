@@ -3,9 +3,9 @@
 	//klassi sees saab kasutada 
 	private $connection;
 	
-	//2 alakriipsu j‰rjest __construct
-	//$User = new User(see); jıuab siia sulgude vahele
-	//$mysqli - vıtan ¸henduse vastu functions.php failist
+	//2 alakriipsu j√§rjest __construct
+	//$User = new User(see); j√µuab siia sulgude vahele
+	//$mysqli - v√µtan √ºhenduse vastu functions.php failist
 	function __construct($mysqli) {
 		//klassi sees muutuja kasutamiseks $this-> ...seda private $connectioni, ilma this kasutamata klassi enda uus muutuja $connection
 		//$this viitab sellele klassile
@@ -15,7 +15,7 @@
 	/*TEISED FUNKTSIOONID*/
 	
 	function signup ($firstName, $lastName, $email, $password, $gender, $phoneNumber){
-		//selle sees muutujad pole v‰ljapoole n‰htavad
+		//selle sees muutujad pole v√§ljapoole n√§htavad
 		
 		//$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		
@@ -25,7 +25,7 @@
 		$stmt->bind_param("ssssss", $firstName, $lastName, $email, $password, $gender, $phoneNumber); //$signupEmail emailiks lihtsalt
 		
 		if($stmt->execute()) {
-			echo "Salvestamine ınnestus.";
+			echo "Salvestamine √µnnestus.";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
@@ -42,16 +42,16 @@
 		");
 		echo $this->connection->error;
 		
-		//asendan k¸sim‰rgi
+		//asendan k√ºsim√§rgi
 		$stmt->bind_param("s", $email); //s-string
 		
-		//m‰‰ran tulpadele muutujad
+		//m√§√§ran tulpadele muutujad
 		$stmt->bind_result($id, $firstNameFromDb, $emailFromDb, $passwordFromDb, $created); //Db-database
-		$stmt->execute(); //p‰ring l‰heb l‰bi executiga, isegi kui ¸htegi vastust ei tule
+		$stmt->execute(); //p√§ring l√§heb l√§bi executiga, isegi kui √ºhtegi vastust ei tule
 		
-		if($stmt->fetch()) { //fetch k¸sin rea andmeid
+		if($stmt->fetch()) { //fetch k√ºsin rea andmeid
 			//oli rida
-			//vırdlen paroole 
+			//v√µrdlen paroole 
 			$hash = hash("sha512", $password);
 			if($hash == $passwordFromDb){
 				echo "kasutaja ".$id." logis sisse";

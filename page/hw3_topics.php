@@ -33,6 +33,8 @@
 
 ?>
 
+<?php require("../header.php")?>
+
 <a href="hw3_data.php"> Tagasi </a>
 
 <h1><?php echo $topic->subject;?></h1>
@@ -71,3 +73,4 @@
 	<input type="submit" value = "Postita oma vastus">
 </form>
 </p>
+<?php require("../footer.php")?>

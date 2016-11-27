@@ -62,6 +62,7 @@
 	$topics = $Topic->addToArray();
 ?>
 
+<?php require("../header.php")?>
 <h1>Data</h1>
 <p>
 	Tere tulemast <?=$_SESSION["firstName"];?>!
@@ -142,5 +143,5 @@
 		document.getElementById('content').innerHTML = '';
 		}
 </script>
-
 </p>
+<?php require("../footer.php")?>
