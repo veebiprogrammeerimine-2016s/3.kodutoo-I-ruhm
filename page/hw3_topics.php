@@ -11,6 +11,7 @@
 	$Helper = new Helper($mysqli);
 	
 	$newReplyError = "";
+	//$button = "";
 	
 	if (isset ($_POST["reply"]) ){ 
 		if (empty ($_POST["reply"]) ){ 
@@ -23,13 +24,16 @@
 	if (isset ($_POST["reply"]) && 
 		empty($newReplyError)
 		){
-			$Reply->createNew($Helper->cleanInput($_POST["reply"]), $Helper->cleanInput($_GET["id"]), $_SESSION["firstName"], $_SESSION["email"]); 	
+			$Reply->createNew($Helper->cleanInput($_POST["reply"]), $Helper->cleanInput($_GET["id"]), $_SESSION["firstName"], $_SESSION["email"], $_SESSION["userId"]); 	
 			//header("Location:hw3_topics.php");
 			//exit();
 	} 
 	
 	$replies = $Reply->addToArray($_GET["id"]);
 	$topic = $Topic->get($_GET["id"]);
+	//teen emaili asemel pärast user_id'ga, kuna kui emaili muuta saaks, siis enam postitust kustutada ei saaks
+	//$button = $Topic->checkUser($_GET["id"], $_SESSION["email"]);
+	$button = $Topic->checkUser($_GET["id"], $_SESSION["userId"]);
 
 ?>
 
@@ -45,6 +49,7 @@
 <br>
 <font color="grey"><em>Lisamise kuupäev: <?php echo $topic->created;?></em></font>
 <br><br>
+<?php echo $button; ?>
 <?php
 	$html = "<table>";
 		$html .= "<tr>"; // 

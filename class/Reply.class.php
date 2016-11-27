@@ -6,12 +6,12 @@
 		$this->connection = $mysqli;
 	}
 	
-	function createNew($content, $subject_id, $user, $email){
+	function createNew($content, $subject_id, $user, $email, $user_id){
 		
-		$stmt = $this->connection->prepare("INSERT INTO replies(content, user, email, topic_id) VALUES(?,?,?,?)");
+		$stmt = $this->connection->prepare("INSERT INTO replies(content, user, email, topic_id, user_id) VALUES(?,?,?,?,?)");
 		echo $this->connection->error;
 		
-		$stmt->bind_param("sssi", $content, $user, $email, $subject_id); 
+		$stmt->bind_param("sssii", $content, $user, $email, $subject_id, $user_id); 
 		
 		if($stmt->execute()) {
 			echo "Vastus on lisatud.<br><br>";

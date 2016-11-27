@@ -54,7 +54,7 @@
 		empty($newHeadlineError)&&
 		empty($newContentError)
 		){
-			$Topic->createNew ($Helper->cleanInput($_POST["headline"]), $Helper->cleanInput($_POST["content"]), $_SESSION["firstName"], $_SESSION["email"]);	
+			$Topic->createNew ($Helper->cleanInput($_POST["headline"]), $Helper->cleanInput($_POST["content"]), $_SESSION["firstName"], $_SESSION["email"], $_SESSION["userId"]);	
 			header("Location:hw3_data.php");
 			exit();
 	} 

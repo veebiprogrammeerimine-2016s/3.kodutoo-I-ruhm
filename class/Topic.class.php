@@ -6,12 +6,12 @@
 		$this->connection = $mysqli;
 	}
 	
-	function createNew($subject, $content, $user, $email){
+	function createNew($subject, $content, $user, $email, $user_id){
 		
-		$stmt = $this->connection->prepare("INSERT INTO topics(subject, content, user, email) VALUES(?,?,?,?)");
+		$stmt = $this->connection->prepare("INSERT INTO topics(subject, content, user, email, user_id) VALUES(?,?,?,?,?)");
 		echo $this->connection->error;
 		
-		$stmt->bind_param("ssss", $subject, $content, $user, $email); 
+		$stmt->bind_param("ssssi", $subject, $content, $user, $email, $user_id); 
 		
 		if($stmt->execute()) {
 			echo "Salvestamine õnnestus.<br>";
@@ -84,6 +84,28 @@
 		//$mysqli->close();
 		
 		return $topic;
-	}	
+	}
+
+	function checkUser($topic_id, $user_id){
+		$stmt = $this->connection-> prepare("SELECT subject, content FROM topics WHERE id=? and user_id=?");
+		
+		echo $this->connection->error;
+		
+		$stmt->bind_param("ii", $topic_id, $user_id);
+		$stmt->bind_result($subject, $content);
+		$stmt->execute();
+		
+		$button = "";
+		
+		if($stmt->fetch()){
+		
+			$button = "<button type='delete_button'>Kustuta oma teema</button><br><br>";
+			//echo $button;
+		
+		}
+		
+		$stmt->close();
+		return $button;
+	}
 }
 ?>
