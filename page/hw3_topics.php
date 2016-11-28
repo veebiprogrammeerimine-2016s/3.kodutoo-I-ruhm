@@ -11,6 +11,7 @@
 	$Helper = new Helper($mysqli);
 	
 	$newReplyError = "";
+	//$reply_id = "";
 	
 	if (isset ($_POST["reply"]) ){ 
 		if (empty ($_POST["reply"]) ){ 
@@ -41,7 +42,7 @@
 	//$del_topic = $Topic->checkUser($_GET["id"], $_SESSION["email"]);
 	//NB kasutaja muuta teemat ei saa, aint vasutseid saab muuta
 	$del_topic = $Topic->checkUser($_GET["id"], $_SESSION["userId"]);
-	$change_reply = $Reply->checkUser($_GET["id"], $_SESSION["userId"]);
+	//$change_reply = $Reply->checkUser($_GET["id"], $_SESSION["userId"], $reply_id);
 
 ?>
 
@@ -74,7 +75,7 @@
 			$html .= "<td>".$r->email."</td>";
 			$html .= "<td>".$r->created."</td>";
 			//$html .= "<td><a href='hw3_edit.php?id=".$r->id."'>Muuda või kustuta</a></td>";
-			$html .= "<td>".$change_reply."</td>";
+			$html .= "<td>".$change_reply = $Reply->checkUser($_GET["id"], $_SESSION["userId"], $r->id)."</td>";
 		$html .= "</tr>";
 	} 
 	

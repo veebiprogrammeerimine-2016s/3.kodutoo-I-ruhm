@@ -47,13 +47,14 @@
 		
 			array_push ($result, $reply);
 		}
+		
 		$stmt->close();
 		//$mysqli->close();
 		
 		return $result;
 	}
 	
-	function checkUser($topic_id, $user_id) {
+	function checkUser($topic_id, $user_id, $reply_id) {
 		$stmt = $this->connection-> prepare("SELECT content FROM replies WHERE topic_id=? and user_id=?");
 		
 		echo $this->connection->error;
@@ -66,13 +67,85 @@
 		
 		if($stmt->fetch()){
 			
+			//echo $reply_id;
+			
 			//panen hiljem reply_id juurde
-			$change_reply = "<a href='hw3_edit.php?id=$topic_id&change=true' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
+			//$change_reply = "<a href='hw3_edit.php?id=$topic_id&change=true' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
+			$change_reply = "<a href='hw3_edit.php?topic=$topic_id&reply=$reply_id' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
 		
+		}	
+		$stmt->close();
+		return $change_reply;
+	}
+	
+	function checkAccess($topic_id, $reply_id, $user_id){
+		$stmt = $this->connection-> prepare("SELECT content FROM replies WHERE topic_id=? and id=? and user_id=?");
+		
+		echo $this->connection->error;
+		
+		$stmt->bind_param("iii", $topic_id, $reply_id, $user_id);
+		$stmt->bind_result($content);
+		$stmt->execute();
+		
+		$access = "no";
+		
+		if($stmt->fetch()){
+			
+			$access = "yes";
+		
+		} 
+		
+		return $access;
+	}
+	
+	//A function can not return multiple values, but similar results can be obtained by returning an array.
+	
+	function find($topic_id, $reply_id, $user_id ){
+		$stmt = $this->connection-> prepare("SELECT content FROM replies WHERE topic_id=? and id=? and user_id=?");
+		
+		echo $this->connection->error;
+		
+		$stmt->bind_param("iii", $topic_id, $reply_id, $user_id);
+		$stmt->bind_result($content);
+		$stmt->execute();
+
+		$reply = ""; 
+		
+		if($stmt->fetch()){
+			$reply= $content;
 		}
 		
 		$stmt->close();
-		return $change_reply;
+		
+		return $reply;
+		
+	}
+	
+	function update($reply, $reply_id){
+		$stmt = $this->connection->prepare("UPDATE replies SET content=? WHERE id=?");
+		
+		$stmt->bind_param("si",$reply, $reply_id);
+		
+		// kas õnnestus salvestada
+		if($stmt->execute()){
+			// õnnestus
+			echo "Muudatus salvestatud!";
+		}
+		
+		$stmt->close();
+	}
+	
+	function updateTime($reply_id){
+		$stmt = $this->connection->prepare("UPDATE replies SET created = current_timestamp WHERE id=?");
+		
+		$stmt->bind_param("i",$reply_id);
+		
+		// kas õnnestus salvestada
+		if($stmt->execute()){
+			// õnnestus
+		}
+		
+		$stmt->close();
 	}
 	
 }
