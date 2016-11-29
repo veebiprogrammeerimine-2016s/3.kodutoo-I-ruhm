@@ -14,6 +14,9 @@
 	
 	$newHeadline = "";	
 	
+	$sort = "topic";
+	$order = "ASC";
+	
 	//kas on sisse loginud, kui ei ole, siis suunata login lehele
 	
 	if (!isset($_SESSION["userId"])) { //kui ei ole session userId, suuna login lehele 
@@ -59,7 +62,24 @@
 			exit();
 	} 
 	
-	$topics = $Topic->addToArray();
+	//kas keegi otsib
+	if(isset($_GET["q"])){
+		//Kui otsib, võtame otsisõna aadressirealt
+		$q = $_GET["q"];
+		//otsisõna funktsiooni sisse
+	} else {
+		//otsisõna tühi
+		$q = "";
+	}
+	
+	if(isset($_GET["sort"]) && isset($_GET["order"])) {
+		$sort = $_GET["sort"];
+		$order = $_GET["order"];
+	}
+	
+	$topics = $Topic->addToArray($q, $sort, $order);
+	//var_dump($_GET);
+	
 ?>
 
 <?php require("../header.php")?>
@@ -80,22 +100,65 @@
 </form>
 
 <h1>Foorum</h1>
+<form>
+	<input type="search" name="q" value="<?=$q;?>"> 
+	<input type="submit" value="Otsi">
+</form>
+<p>
+<!--Sorteerimine <?=$_GET["sort"];?> <?=$_GET["order"];?>.-->
+</p>
 <p>
 <?php
 	$html = "<table>";
-		$html .= "<tr>"; // 
-			//$html .= "<th>Id</th>";
-			$html .= "<th>Teema</th>";
-			$html .= "<th>Kasutaja</th>";
-			$html .= "<th>Kasutaja e-post</th>";
-			$html .= "<th>Lisamise kuupäev</th>";
+		$html .= "<tr>"; 
+			$topicOrder = "ASC";
+			$userOrder = "ASC";
+			$emailOrder = "ASC";
+			$dateOrder = "ASC";
+			
+			if (isset($_GET["sort"]) && $_GET["sort"] == "topic") {
+				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+					$topicOrder="DESC"; 
+				}
+			}
+			
+			if (isset($_GET["sort"]) && $_GET["sort"] == "user") {
+				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+					$userOrder="DESC"; 
+				}
+			}
+			
+			if (isset($_GET["sort"]) && $_GET["sort"] == "email") {
+				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+					$emailOrder="DESC"; 
+				}
+			}
+			
+			if (isset($_GET["sort"]) && $_GET["sort"] == "date") {
+				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+					$dateOrder="DESC"; 
+				}
+			}
+		
+		$html .= "<th>
+			<a href='?q=".$q."&sort=topic&order=".$topicOrder."'>
+			<font size='4'>Teema</font></th>";
+			$html .= "<th>
+			<a href='?q=".$q."&sort=user&order=".$userOrder."'>
+			<font size='4'>Kasutaja</font></th>";
+			$html .= "<th>
+			<a href='?q=".$q."&sort=email&order=".$emailOrder."'>
+			<font size='4'>Kasutaja e-post</font></th>";
+			$html .= "<th>
+			<a href='?q=".$q."&sort=date&order=".$dateOrder."'>
+			<font size='4'>Lisamise kuupäev</font></th>";
 		$html .= "</tr>";
+
 
 	foreach($topics as $t){
 		$html .= "<tr>";
-			//$html .= "<td>".$t->id."</td>";
 			//$html .= "<td> <a href='#heading' onclick='changeTitle()'>".$t->subject."</a></td>";
-			$html .= "<td><a href='hw3_topics.php?id=".$t->id."' style='text-decoration:none'>".$t->subject."</a></td>";
+			$html .= "<td font size='20'><a href='hw3_topic.php?id=".$t->id."' style='text-decoration:none'><font size='4'>".$t->subject."</font></a></td>";
 			$html .= "<td>".$t->user."</td>";
 			$html .= "<td>".$t->email."</td>";
 			$html .= "<td>".$t->created."</td>";

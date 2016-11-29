@@ -27,6 +27,7 @@
 			SELECT id, content, created, user, email
 			FROM replies
 			WHERE topic_id=?
+			AND deleted IS NULL
 		");
 		echo $this->connection->error;
 		
@@ -71,7 +72,7 @@
 			
 			//panen hiljem reply_id juurde
 			//$change_reply = "<a href='hw3_edit.php?id=$topic_id&change=true' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
-			$change_reply = "<a href='hw3_edit.php?topic=$topic_id&reply=$reply_id' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
+			$change_reply = "<a href='hw3_edit.php?topic=$topic_id&reply=$reply_id' style='text-decoration:none'>Muuda või kustuta oma vastus</a>";
 		
 		}	
 		$stmt->close();
@@ -146,6 +147,18 @@
 		}
 		
 		$stmt->close();
+	}
+	
+	function del($topic_id, $reply_id){
+		$stmt = $this->connection->prepare("UPDATE replies SET deleted=NOW() WHERE id=? AND topic_id=? AND deleted IS NULL");
+		$stmt->bind_param("ii",$reply_id, $topic_id);
+
+ 		if($stmt->execute()){
+ 			echo "Kustutamine õnnestus!";
+ 		}
+ 		
+ 		$stmt->close();
+		
 	}
 	
 }

@@ -20,13 +20,46 @@
 		}
 	}
 	
-	function addToArray (){
+	function addToArray ($q, $sort, $order){
+		$allowedSort = ["subject", "user", "email", "created"];
 		
-		$stmt = $this->connection->prepare("
-			SELECT id, subject, created, user, email
-			FROM topics
-			WHERE deleted IS NULL 
-		");
+		if(!in_array($sort, $allowedSort)) { //esimene asi, mis ta tahab, on nõel ja teine heinakuhi
+			// ei ole lubatud tulp, siis sorteerime teema järgi
+			$sort = "subject";
+		}
+		
+		$orderBy = "ASC";
+		
+		//see if tagab, et orderby saab aint 2 väärtust olla
+		if($order == "DESC") {
+			$orderBy = "DESC";
+		}
+		
+		//echo "Sorteerin ".$sort." ".$orderBy." ";
+		
+		//kas otsib
+		if($q != "") {
+			echo "Otsib: ".$q;
+			$stmt = $this->connection->prepare("
+				SELECT id, subject, created, user, email
+				FROM topics
+				WHERE deleted IS NULL 
+				AND (subject LIKE ? OR user LIKE ? OR email LIKE ? OR created LIKE ?)
+				ORDER BY $sort $order
+			"); //AND (subject LIKE ? OR user LIKE ? OR email LIKE ? OR created LIKE ?)
+			$searchWord = "%".$q."%";
+			echo $q;
+			echo $searchWord;
+			$stmt->bind_param("ssss", $searchWord, $searchWord, $searchWord, $searchWord);
+		} else {
+			$stmt =  $this->connection->prepare("
+				SELECT id, subject, created, user, email
+				FROM topics
+				WHERE deleted IS NULL
+				ORDER BY $sort $order				
+			");
+		}
+		
 		echo $this->connection->error;
 		
 		$stmt->bind_result ($id, $subject, $date, $user, $email);
@@ -100,7 +133,7 @@
 		
 		if($stmt->fetch()){
 		
-			$del_topic = "<a href='hw3_topics.php?id=$topic_id&delete=true' style='text-decoration:none'>Kustuta oma teema</a>";
+			$del_topic = "<a href='hw3_topic.php?id=$topic_id&delete=true' style='text-decoration:none'>Kustuta oma teema</a>";
 			//echo $del_topic;
 		
 		}
