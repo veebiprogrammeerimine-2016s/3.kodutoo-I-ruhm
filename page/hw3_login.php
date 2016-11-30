@@ -29,6 +29,8 @@
 	$gender = "";
 	$phoneNumber = "";
 	
+	$msg="";
+	
 	if (isset ($_POST["loginEmail"]) ){
 		if (empty ($_POST["loginEmail"]) ){
 			$loginEmailError = "Palun sisesta e-post!";		
@@ -137,8 +139,7 @@
 		echo "telefoni number ".$phoneNumber."<br>";*/
 		
 		//echo $serverPassword;
-		
-		$User->signup($Helper->cleanInput($firstName), $Helper->cleanInput($lastName), $Helper->cleanInput($signupEmail), $Helper->cleanInput($password), $Helper->cleanInput($gender), $Helper->cleanInput($phoneNumber)); //cleanInput igale muutujale eraldi teha
+		$msg = $User->signup($Helper->cleanInput($firstName), $Helper->cleanInput($lastName), $Helper->cleanInput($signupEmail), $Helper->cleanInput($password), $Helper->cleanInput($gender), $Helper->cleanInput($phoneNumber)); //cleanInput igale muutujale eraldi teha
 	}
 	
 	$notice = "";
@@ -151,9 +152,11 @@
 			//login sisse
 			$notice= $User->login($Helper->cleanInput($_POST["loginEmail"]), $Helper->cleanInput($_POST["loginPassword"])); //functions error kandus üle notice muutujasse login funktsiooniga
 		}
+		
+		
 ?>
 <?php require("../header.php")?>
-	<div class="login" style="padding-left:20px;"> <!-- Oleneb ekraanist, kuhu sisu jätab -->
+	<div class="login" style="padding-left:20px;">
 		<h1>Logi sisse</h1>	
 		
 		<form method="POST">
@@ -167,6 +170,10 @@
 			<input type="submit" value = "Logi sisse">
 		</form>
 		
+		<br>
+		<p>
+		<b><font color="green"> <?=$msg;?> </font></b>
+		</p>
 		<h1>Loo kasutaja</h1>	
 		
 		<form method="POST">
@@ -213,6 +220,7 @@
 			
 			<input type="submit" value = "Loo kasutaja">
 		</form>
+		<br><br>
 	</div>
 		 <!--Mvp ideeks on üldine foorum, kuhu saab postitada erinevaid teemasid ning kommenteerida olemasolevaid. Vastates teiste kasutajate teemadele saab koguda punkte ning neid kasutada oma teemadele "high priority" märkimisel või toodete/autasude lunastamisel. "High priority" eest saab oma teema tõsta teiste seast esile/ettepoole ning sellele motiveerib rohkem vastama, kuna võimalus on teenida rohkem punkte. Väga originaalset ideed hetkel ei ole, aga ehk tuleb teostamise käigus ning võib-olla idee ka muutub natukene.-->
 <?php require("../footer.php")?>

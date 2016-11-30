@@ -14,10 +14,12 @@
 		$stmt->bind_param("ssssi", $subject, $content, $user, $email, $user_id); 
 		
 		if($stmt->execute()) {
-			echo "Salvestamine õnnestus.<br>";
+			//echo "Salvestamine õnnestus.<br>";
+			$_SESSION["topic_message"] = "TEEMA LISATUD!";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
+		
 	}
 	
 	function addToArray ($q, $sort, $order){
@@ -39,17 +41,17 @@
 		
 		//kas otsib
 		if($q != "") {
-			echo "Otsib: ".$q;
+			//echo "Otsib: ".$q;
 			$stmt = $this->connection->prepare("
 				SELECT id, subject, created, user, email
 				FROM topics
 				WHERE deleted IS NULL 
 				AND (subject LIKE ? OR user LIKE ? OR email LIKE ? OR created LIKE ?)
 				ORDER BY $sort $order
-			"); //AND (subject LIKE ? OR user LIKE ? OR email LIKE ? OR created LIKE ?)
+			"); 
 			$searchWord = "%".$q."%";
-			echo $q;
-			echo $searchWord;
+			//echo $q;
+			//echo $searchWord;
 			$stmt->bind_param("ssss", $searchWord, $searchWord, $searchWord, $searchWord);
 		} else {
 			$stmt =  $this->connection->prepare("
@@ -133,7 +135,7 @@
 		
 		if($stmt->fetch()){
 		
-			$del_topic = "<a href='hw3_topic.php?id=$topic_id&delete=true' style='text-decoration:none'>Kustuta oma teema</a>";
+			$del_topic = "<a class='btn btn-default btn-xs' href='hw3_topic.php?id=$topic_id&delete=true' style='text-decoration:none'><font color='	 #cc0000''><span class='glyphicon glyphicon-trash'></span> Kustuta oma teema</font></a>";
 			//echo $del_topic;
 		
 		}
@@ -149,7 +151,8 @@
 		// kas õnnestus salvestada
  		if($stmt->execute()){
  			// õnnestus
- 			echo "Kustutamine õnnestus!";
+ 			//echo "Kustutamine õnnestus!";
+			$_SESSION["topic_message"] = "TEEMA KUSTUTATUD!";
  		}
  		
  		$stmt->close();

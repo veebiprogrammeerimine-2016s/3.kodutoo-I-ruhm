@@ -14,7 +14,8 @@
 		$stmt->bind_param("sssii", $content, $user, $email, $subject_id, $user_id); 
 		
 		if($stmt->execute()) {
-			echo "Vastus on lisatud.<br><br>";
+			//echo "Vastus on lisatud.<br><br>";
+			$_SESSION["reply_message"] = "VASTUS LISATUD!";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
@@ -72,7 +73,7 @@
 			
 			//panen hiljem reply_id juurde
 			//$change_reply = "<a href='hw3_edit.php?id=$topic_id&change=true' style='text-decoration:none'>Kustuta või muuda oma vastust</a>";
-			$change_reply = "<a href='hw3_edit.php?topic=$topic_id&reply=$reply_id' style='text-decoration:none'>Muuda või kustuta oma vastus</a>";
+			$change_reply = "<a class='btn btn-default btn-xs' href='hw3_edit.php?topic=$topic_id&reply=$reply_id' style='text-decoration:none'><span class='glyphicon glyphicon-pencil'></span> Muuda või kustuta oma vastus</a>";
 		
 		}	
 		$stmt->close();
@@ -130,7 +131,8 @@
 		// kas õnnestus salvestada
 		if($stmt->execute()){
 			// õnnestus
-			echo "Muudatus salvestatud!";
+			//echo "Muudatus salvestatud!";
+			$_SESSION["reply_change_message"] = "VASTUS MUUDETUD!";
 		}
 		
 		$stmt->close();
@@ -154,7 +156,8 @@
 		$stmt->bind_param("ii",$reply_id, $topic_id);
 
  		if($stmt->execute()){
- 			echo "Kustutamine õnnestus!";
+ 			//echo "Kustutamine õnnestus!";
+			$_SESSION["reply_del_message"] = "VASTUS KUSTUTATUD!";
  		}
  		
  		$stmt->close();

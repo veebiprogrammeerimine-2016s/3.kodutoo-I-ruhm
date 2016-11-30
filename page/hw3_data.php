@@ -14,8 +14,8 @@
 	
 	$newHeadline = "";	
 	
-	$sort = "topic";
-	$order = "ASC";
+	$sort = "created";
+	$order = "DESC";
 	
 	//kas on sisse loginud, kui ei ole, siis suunata login lehele
 	
@@ -50,6 +50,30 @@
 		}
 	}
 	
+	$topic_msg = "";
+	if(isset($_SESSION["topic_message"])){
+		$topic_msg = $_SESSION["topic_message"];
+		
+		//kui ühe näitame siis kustuta ära, et pärast refreshi ei näitaks
+		unset($_SESSION["topic_message"]);
+	}
+	
+	$topic_del_msg= "";
+	if(isset($_SESSION["topic_del_message"])){
+		$topic_del_msg = $_SESSION["topic_del_message"];
+		
+		//kui ühe näitame siis kustuta ära, et pärast refreshi ei näitaks
+		unset($_SESSION["topic_del_message"]);
+	}
+	
+	$pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+
+	/*if($pageWasRefreshed ) {
+		$topic_msg = "";
+	} else {
+		//do nothing;
+	}*/
+	
 	if (isset ($_POST["headline"]) && 
 		isset ($_POST["content"]) && 
 		/*!empty ($_POST["headline"]) && 
@@ -57,7 +81,7 @@
 		empty($newHeadlineError)&&
 		empty($newContentError)
 		){
-			$Topic->createNew ($Helper->cleanInput($_POST["headline"]), $Helper->cleanInput($_POST["content"]), $_SESSION["firstName"], $_SESSION["email"], $_SESSION["userId"]);	
+			$Topic->createNew ($Helper->cleanInput($_POST["headline"]), $Helper->cleanInput($_POST["content"]), $_SESSION["firstName"], $_SESSION["email"], $_SESSION["userId"]);
 			header("Location:hw3_data.php");
 			exit();
 	} 
@@ -81,7 +105,7 @@
 	
 	$sort_name = "";
 	if(!isset($_GET["sort"])){
-		$sort_name = "teema";
+		$sort_name = "lisamise kuupäeva";
 	} else {
 		if($_GET["sort"] == "topic"){
 			$sort_name = "teema";
@@ -99,138 +123,141 @@
 ?>
 
 <?php require("../header.php")?>
-<div class="data" style="padding-left:20px;"> 
-<h1>Data</h1>
-<p>
-	Tere tulemast <?=$_SESSION["firstName"];?>!
-	<a href="?logout=1">Logi välja</a>
-<p>
-<h2>Loo uus postitus</h2>
-<form method="POST">
-	<label>Pealkiri:</label>
-	<input type="text" name="headline" value="<?=$newHeadline;?>"> <?php echo $newHeadlineError; ?>
-	<br><br>
-	<label>Sisu:</label>
-	<textarea cols="40" rows="5" name="content" <?=$newContent = ""; if (isset($_POST['content'])) { $newContent = $_POST['content'];}?> ><?php echo $newContent; ?></textarea> <?php echo $newContentError; ?> <!--Textareal pole eraldi value, sinna sisse kirjutada-->
-	<br><br>
-	<input type="submit" value = "Postita">
-</form>
-
-<h1>Foorum</h1>
-<form>
-	<input type="search" name="q" value="<?=$q;?>"> 
-	<input type="submit" value="Otsi">
-</form>
-<p>
-Sorteerimine <?=$sort_name;?> järgi.
-</p>
-<p>
-<?php
-	$html = "<table class='table table-striped table-hover'>";
-		$html .= "<tr>"; 
-			$topicOrder = "ASC";
-			$userOrder = "ASC";
-			$emailOrder = "ASC";
-			$dateOrder = "ASC";
-			$topicArrow = "&rarr;";
-			$userArrow = "&rarr;";
-			$emailArrow = "&rarr;";
-			$dateArrow = "&orarr;";
-			
-			if (isset($_GET["sort"]) && $_GET["sort"] == "topic") {
-				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
-					$topicOrder="DESC"; 
+	<div class="data" style="padding-left:20px;padding-right:20px"> 
+		<br>
+		<p><b>
+			Tere tulemast <?=$_SESSION["firstName"];?>!
+			<a href="?logout=1">Logi välja</a>
+		</b></p>
+		<h1>Foorum</h1>
+		<p><b><font class="added" > <?=$topic_msg;?> </font></b></p>
+		<p><b><span class="deleted" > <?=$topic_del_msg;?> </span></b></p>
+		<p><b>Loo uus teema</b></p>
+		<form method="POST">
+			<label>Pealkiri:</label>
+			<input type="text" name="headline" value="<?=$newHeadline;?>"> <?php echo $newHeadlineError; ?>
+			<br><br>
+			<label>Sisu:</label>
+			<textarea cols="40" rows="5" name="content" <?=$newContent = ""; if (isset($_POST['content'])) { $newContent = $_POST['content'];}?> ><?php echo $newContent; ?></textarea> <?php echo $newContentError; ?> <!--Textareal pole eraldi value, sinna sisse kirjutada-->
+			<br><br>
+			<input type="submit" value = "Postita">
+		</form>
+		<br><br>
+		<form>
+			<input type="search" name="q" value="<?=$q;?>"> 
+			<input type="submit" value="Otsi teemat">
+		</form>
+		<br>
+		<p>
+		<b>Sorteerimine <font class="sort" color="green"> <?=$sort_name;?> </font>järgi.</b>
+		</p>
+		<p>
+		<?php
+			$html = "<table class='table table-striped table-hover'>";
+				$html .= "<tr class='success'>"; 
+					$topicOrder = "ASC";
+					$userOrder = "ASC";
+					$emailOrder = "ASC";
+					$dateOrder = "ASC";
 					$topicArrow = "&larr;";
-				}
-			}
-			
-			if (isset($_GET["sort"]) && $_GET["sort"] == "user") {
-				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
-					$userOrder="DESC";
 					$userArrow = "&larr;";
-				}
-			}
-			
-			if (isset($_GET["sort"]) && $_GET["sort"] == "email") {
-				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
-					$emailOrder="DESC"; 
 					$emailArrow = "&larr;";
-				}
-			}
+					$dateArrow = "&orarr;";
+					
+					if (isset($_GET["sort"]) && $_GET["sort"] == "topic") {
+						if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+							$topicOrder="DESC"; 
+							$topicArrow = "&rarr;";
+						}
+					}
+					
+					if (isset($_GET["sort"]) && $_GET["sort"] == "user") {
+						if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+							$userOrder="DESC";
+							$userArrow = "&rarr;";
+						}
+					}
+					
+					if (isset($_GET["sort"]) && $_GET["sort"] == "email") {
+						if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+							$emailOrder="DESC"; 
+							$emailArrow = "&rarr;";
+						}
+					}
+					
+					if (isset($_GET["sort"]) && $_GET["sort"] == "created") {
+						if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+							$dateOrder="DESC";
+							$dateArrow = "&olarr;";					
+						}
+					}
+				
+				$html .= "<th>
+					<a href='?q=".$q."&sort=topic&order=".$topicOrder."' style='text-decoration:none'>
+					<font size='4'>Teema</font><br><font size='2'>A</font>".$topicArrow."</th>";
+					$html .= "<th>
+					<a href='?q=".$q."&sort=user&order=".$userOrder."' style='text-decoration:none'>
+					<font size='4'>Kasutaja</font><br><font size='2'>A</font>".$userArrow."</th>";
+					$html .= "<th>
+					<a href='?q=".$q."&sort=email&order=".$emailOrder."' style='text-decoration:none'>
+					<font size='4'>Kasutaja e-post</font><br><font size='2'>A</font>".$emailArrow."</th>";
+					$html .= "<th>
+					<a href='?q=".$q."&sort=created&order=".$dateOrder."' style='text-decoration:none'>
+					<font size='4'>Lisamise kuupäev</font><br><font size='2'>&#128336;</font>".$dateArrow."</th>";
+				$html .= "</tr>";
+
+
+			foreach($topics as $t){
+				$html .= "<tr>";
+					//$html .= "<td> <a href='#heading' onclick='changeTitle()'>".$t->subject."</a></td>";
+					$html .= "<td font size='20'><a href='hw3_topic.php?id=".$t->id."' style='text-decoration:none'><font size='4'>".$t->subject."</font></a></td>";
+					$html .= "<td>".$t->user."</td>";
+					$html .= "<td>".$t->email."</td>";
+					$html .= "<td>".$t->created."</td>";
+				$html .= "</tr>";
+			} 
 			
-			if (isset($_GET["sort"]) && $_GET["sort"] == "created") {
-				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
-					$dateOrder="DESC";
-					$dateArrow = "&olarr;";					
+			$html .= "</table>";
+			echo $html;
+			
+			$headingName = "";
+			//$html = "<table border='1'>";
+			//$html = "<table border=\"1\">"; \ ei lõhu ära 
+			
+			/*$html = "<table>";
+				$html .= "<tr>"; 
+					$html .= "<th>Teema</th>";
+					$html .= "<th>Sisu</th>";
+				$html .= "</tr>";
+
+			foreach($replies as $r){
+				$html .= "<tr>";
+					$html .= "<td>".$r->topic."</td>";
+					$html .= "<td>".$r->content."</td>";
+				$html .= "</tr>";
+			} 
+			$html .= "</table>";
+			//echo $html;
+			$contentTable = $html;*/
+		?>
+		<br>
+		<!--<button onclick="addContent()">Näita teemade sisu</button>
+		<button onclick="removeContent()">Peida teemade sisu</button>
+		</p>-->
+
+		<h1 id="heading"><span id="newHeading"></span></h1>
+		<p id="content">
+		<script>
+			function addContent(){
+				/*<?php $headingName =  $_SESSION["subject"];?> */
+				document.getElementById('newHeading').innerHTML = 'Teemade sisu ';
+				document.getElementById('content').innerHTML = '<?php echo $contentTable ?> ';
 				}
-			}
-		
-		$html .= "<th>
-			<a href='?q=".$q."&sort=topic&order=".$topicOrder."' style='text-decoration:none'>
-			<font size='4'>Teema</font><br><font size='2'>A</font>".$topicArrow."</th>";
-			$html .= "<th>
-			<a href='?q=".$q."&sort=user&order=".$userOrder."' style='text-decoration:none'>
-			<font size='4'>Kasutaja</font><br><font size='2'>A</font>".$userArrow."</th>";
-			$html .= "<th>
-			<a href='?q=".$q."&sort=email&order=".$emailOrder."' style='text-decoration:none'>
-			<font size='4'>Kasutaja e-post</font><br><font size='2'>A</font>".$emailArrow."</th>";
-			$html .= "<th>
-			<a href='?q=".$q."&sort=created&order=".$dateOrder."' style='text-decoration:none'>
-			<font size='4'>Lisamise kuupäev</font><br><font size='2'>&#128336;</font>".$dateArrow."</th>";
-		$html .= "</tr>";
-
-
-	foreach($topics as $t){
-		$html .= "<tr>";
-			//$html .= "<td> <a href='#heading' onclick='changeTitle()'>".$t->subject."</a></td>";
-			$html .= "<td font size='20'><a href='hw3_topic.php?id=".$t->id."' style='text-decoration:none'><font size='4'>".$t->subject."</font></a></td>";
-			$html .= "<td>".$t->user."</td>";
-			$html .= "<td>".$t->email."</td>";
-			$html .= "<td>".$t->created."</td>";
-		$html .= "</tr>";
-	} 
-	
-	$html .= "</table>";
-	echo $html;
-	
-	$headingName = "";
-	//$html = "<table border='1'>";
-	//$html = "<table border=\"1\">"; \ ei lõhu ära 
-	
-	/*$html = "<table>";
-		$html .= "<tr>"; 
-			$html .= "<th>Teema</th>";
-			$html .= "<th>Sisu</th>";
-		$html .= "</tr>";
-
-	foreach($replies as $r){
-		$html .= "<tr>";
-			$html .= "<td>".$r->topic."</td>";
-			$html .= "<td>".$r->content."</td>";
-		$html .= "</tr>";
-	} 
-	$html .= "</table>";
-	//echo $html;
-	$contentTable = $html;*/
-?>
-<br>
-<!--<button onclick="addContent()">Näita teemade sisu</button>
-<button onclick="removeContent()">Peida teemade sisu</button>
-</p>-->
-
-<h1 id="heading"><span id="newHeading"></span></h1>
-<p id="content">
-<script>
-	function addContent(){
-		/*<?php $headingName =  $_SESSION["subject"];?> */
-		document.getElementById('newHeading').innerHTML = 'Teemade sisu ';
-		document.getElementById('content').innerHTML = '<?php echo $contentTable ?> ';
-		}
-	function removeContent(){
-		document.getElementById('newHeading').innerHTML = '';
-		document.getElementById('content').innerHTML = '';
-		}
-</script>
-</p>
-</div>
+			function removeContent(){
+				document.getElementById('newHeading').innerHTML = '';
+				document.getElementById('content').innerHTML = '';
+				}
+		</script>
+		</p>
+	</div>
 <?php require("../footer.php")?>

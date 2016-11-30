@@ -24,11 +24,15 @@
 		
 		$stmt->bind_param("ssssss", $firstName, $lastName, $email, $password, $gender, $phoneNumber); //$signupEmail emailiks lihtsalt
 		
+		$msg = "";
 		if($stmt->execute()) {
-			echo "Salvestamine õnnestus.";
+			//echo "Salvestamine õnnestus.";
+			$msg = "Kasutaja loodud!";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
+		
+		return $msg;
 	}
 	
 	function login ($email, $password){
