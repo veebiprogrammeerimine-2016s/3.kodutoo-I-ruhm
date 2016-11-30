@@ -45,7 +45,11 @@
 	
 	//var_dump($userFavorites);
 ?>
+<?php require("../header.php"); ?>
 <a href="data.php"> < tagasi</a>
+
+<div class "edit" style="padding-left:10px;">
+
 <h1>Minu konto</h1> 
 
 <p>
@@ -100,4 +104,6 @@
 	<input type="submit" value="Lisa">
 	
 </form>
+
+</div>
 <?php require("../footer.php"); ?>

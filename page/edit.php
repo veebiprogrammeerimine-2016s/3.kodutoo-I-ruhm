@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 	require("../functions.php");
 	
@@ -28,7 +28,6 @@
 	}
 	
 	
-	
 	// kui ei ole id'd aadressireal siis suunan
 	if(!isset($_GET["id"])){
 		header("Location: data.php");
@@ -36,34 +35,40 @@
 	}
 	
 	//saadan kaasa id
-	$b = $Books->AllBooks($_GET["id"]);
+	$p = $Books->AllBooks($_GET["id"]);
 	//var_dump($c);
 	
 	if(isset($_GET["success"])){
-		echo "salvestamine �nnestus";
+		//echo "Salvestamine õnnestus";
 	}
 	
 ?>
 <?php require("../header.php"); ?>
 
 <br><br>
-<a href="data.php"> tagasi </a>
+<a href="data.php"> < tagasi </a>
+
+<div class "edit" style="padding-left:10px;">
 
 <h2>Muuda kirjet</h2>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
 	<input type="hidden" name="id" value="<?=$_GET["id"];?>" > 
   	<label for="author" >Autor</label><br>
-	<input id="author" name="author" type="text" value="<?php echo $b->author;?>" ><br><br>
+	<input id="author" name="author" type="text" value="<?php echo $p->author;?>" ><br><br>
   	<label for="title" >Pealkiri</label><br>
-	<input id="title" name="title" type="text" value="<?=$b->title;?>"><br><br>
+	<input id="title" name="title" type="text" value="<?=$p->title;?>"><br><br>
   	
 	<input type="submit" name="update" value="Salvesta">
   </form>
   
   
  <br>
- <br>
- <br>
+ 
  <a href="?id=<?=$_GET["id"];?>&delete=true">Kustuta</a>
+ <br>
+ <br>
+ <br>
+ 
+ </div>
  
  <?php require("../header.php"); ?>

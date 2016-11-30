@@ -98,17 +98,17 @@
 		
 		$signupPassword = hash("sha512", $_POST["signupPassword"]);
 		
-		echo "parool ".$_POST["signupPassword"]."<br>";
-		echo "räsi ".$signupPassword."<br>";
-		echo "sugu ".$gender."<br>";
+		//echo "parool ".$_POST["signupPassword"]."<br>";
+		//echo "räsi ".$signupPassword."<br>";
+		//echo "sugu ".$gender."<br>";
 		
 		//echo $serverUsername; 
 		
-		$signupEmail = cleanInput($signupEmail);
-		$signupPassword = cleanInput($signupPassword);
+		$signupEmail = $Helper->cleanInput($signupEmail);
+		$signupPassword = $Helper->cleanInput($signupPassword);
 		
-		signup($signupEmail, $signupPassword, $signupUsername, $gender);
-
+		$User->signUp($signupEmail, $signupPassword, $signupUsername, $gender);
+		
 		}
 		
 	//kontrollin, et kasutaja täitis välja ja võib sisse logida
@@ -125,6 +125,8 @@
 ?>
 
 <?php require("../header.php"); ?>
+
+<div class "edit" style="padding-left:30px;">
 
 		<h1>Logi sisse</h1>
 
@@ -186,5 +188,7 @@
 			<input type="submit" value="Loo kasutaja">
 		
 		</form>
+		
+</div>
 		
 <?php require("../footer.php"); ?>

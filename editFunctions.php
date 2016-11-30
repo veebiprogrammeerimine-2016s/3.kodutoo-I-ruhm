@@ -2,7 +2,7 @@
 
 	require_once("../../config.php");
 	
-	function AllBooks($edit_id){
+	function AllBooksData($edit_id){
     
         $database = "if16_karoku";
 		

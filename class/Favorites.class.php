@@ -29,7 +29,7 @@ class Favorite {
 	
 	function saveUserFavorite ($favorite_id) {
 		
-		echo "Lemmik raamat: ".$favorite_id."<br>";
+		//echo "Lemmik raamat: ".$favorite_id."<br>";
  		//echo "Kasutaja: ".$_SESSION["userId"]."<br>";
 		
 		$database = "if16_karoku";

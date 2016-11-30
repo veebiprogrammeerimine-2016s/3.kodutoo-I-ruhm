@@ -58,11 +58,31 @@
 		}
 	}
 	
+	if(isset($_GET["q"])) {
+		
+		//kui otsib, võtame otsisõna aadressirealt
+		$q = $_GET["q"];
+	} else {
+		
+		//kas otsisõna on tühi
+		$q = "";
+	}
+	
+	$sort = "id";
+	$order = "ASC";
+	
+	if (isset($_GET["sort"]) && isset($_GET["order"])) {
+		$sort = $_GET["sort"];
+		$order = $_GET["order"];
+	}
+	
 	//saan kõik andmed
-	$people = $Books->AllBooks();
+	
+	$people = $Books->get($q, $sort, $order);
 	
 ?>
 <?php require("../header.php"); ?>
+<div class "data" style="padding-left:10px;">
 
 <h1>Andmed</h1>
 <p> 
@@ -81,20 +101,82 @@
 	
 	<input type="submit" value="Salvesta">	
 </form>
-
-
+<br>
+<form>
+<label>Otsing</label><br>
+	<input type="search" name="q" value="<?=$q;?>">
+	<input type="submit" value="Otsi">
+</form>
 
 <h2>Loetud raamatud</h2>
+
+</div>
 <?php
 
-	$html = "<table>";
+	$html = "<table class='table table-striped'>";
 	
-		$html .= "<tr>";
-			$html .= "<th>ID</th>";
-			$html .= "<th>Raamatu autor</th>";
-			$html .= "<th>Raamatu pealkiri</th>";
-			$html .= "<th>Loetud</th>";
-		$html .= "</tr>";
+	//TABELI SORTEERIMINE
+	$html .= "<tr>";
+	
+		$idOrder = "ASC";
+		$authorOrder="ASC"; 
+		$titleOrder="ASC"; 
+		$createdOrder="ASC"; 
+		$idArrow = "&uarr;";
+		$authorArrow = "&uarr;";
+		$titleArrow = "&uarr;";
+		$createdArrow = "&uarr;";
+		
+		if (isset($_GET["sort"]) && $_GET["sort"] == "id") {
+			if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+				$idOrder="DESC";
+				$idArrow = "&darr;";
+			}
+		}
+		
+		if (isset($_GET["sort"]) && $_GET["sort"] == "author") {
+			if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+				$authorOrder="DESC"; 
+				$authorArrow = "&darr;";
+			}
+		}
+		
+		if (isset($_GET["sort"]) && $_GET["sort"] == "title") {
+			if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+				$titleOrder="DESC";
+				$titleArrow = "&darr;";
+			}
+		}
+		
+		if (isset($_GET["sort"]) && $_GET["sort"] == "created") {
+			if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
+				$createdOrder="DESC";
+				$createdArrow = "&darr;";
+			}
+		}
+		
+	$html .= "<th>
+				<a href='?q=".$q."&sort=id&order=".$idOrder."'>
+					ID ".$idArrow."
+				</a>
+				</th>";
+		$html .= "<th>
+				<a href='?q=".$q."&sort=author&order=".$authorOrder."'>
+					Autor ".$authorArrow."
+				</a>	
+				</th>";
+		$html .= "<th>
+				<a href='?q=".$q."&sort=title&order=".$titleOrder."'>
+					Pealkiri ".$titleArrow."
+				</a>
+				</th>";
+		$html .= "<th>
+				<a href='?q=".$q."&sort=created&order=".$createdOrder."'>
+					Loetud ".$createdArrow."
+				</a>
+				</th>";
+	$html .= "</tr>";
+	
 
 	foreach($people as $p) {
 		$html .= "<tr>";
@@ -102,6 +184,7 @@
 			$html .= "<td>".$p->author."</td>";
 			$html .= "<td>".$p->title."</td>";
 			$html .= "<td>".$p->created."</td>";
+			$html .= "<td><a class='btn btn-default btn-sm' href='edit.php?id=".$p->id."'><span class='glyphicon glyphicon-pencil'></span> Muuda</a></td>";
 		$html .= "</tr>";	
 	}
 
