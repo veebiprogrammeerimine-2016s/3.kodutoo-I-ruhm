@@ -109,6 +109,32 @@
 	
 	//var_dump($people[1]);
 	
+	//saan kõik kasutajate andmed
+	
+	//kas otsitakse
+	
+	if (isset($_GET["q"])){
+		
+		//kui otsitakse, võtame otsisõna aadressirealt
+		$q=$_GET["q"];
+	
+	}else{
+		
+		//otsisõna on tühi
+		$q="";
+	}
+	
+	$sort="id";
+	$order="ASC";
+	
+	if (isset($_GET["sort"])&& isset($_GET["order"])){
+		$sort=$_GET["sort"];
+		$order=$_GET["order"];
+	}
+	
+	//otsisõna funktsiooni sisse
+	$HealthData=$Health->get($q, $sort, $order);
+	
 ?>
 
 <h1>Hinda oma tervislikku seisundit</h1>
@@ -170,15 +196,67 @@
 
 <br><br>
 <h2>Kasutajate andmed</h2>
+
+<form>
+
+	<input type="search" name="q" value="<?=$q;?>">
+	<input type="submit" value="Otsi">
+	
+</form>
+
 <?php
 	$html="<table>";
 		$html .="<tr>";
-			$html .="<th>id</th>";
-			$html .="<th>Sugu</th>";
-			$html .="<th>Vanus</th>";
-			$html .="<th>Kuupäev</th>";
-			$html .="<th>Sammude arv</th>";
-			$html .="<th>Käidud maa pikkus km-s</th>";
+			$idOrder="ASC";
+			if(isset($_GET["order"])&& $_GET["order"]=="ASC"){
+				$idOrder="DESC";
+			}
+			$html .="<th>
+				<a href='?q=".$q."&sort=id&order=".$idOrder."'>
+				</a>
+			</th>";
+			
+			$GenderOrder="ASC";
+			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
+				$GenderOrder="DESC";
+			}
+			$html .="<th>
+				<a href='?q=".$q."&sort=Gender&order=".$GenderOrder."'> Sugu
+				</a>
+			</th>";
+			
+			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
+				$AgeOrder="DESC";
+			}
+			$html .="<th>
+				<a href='?=".$q."&sort=Age&order=".$AgeOrder."'>Vanus
+				</a>
+			</th>";
+			
+			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
+				$dateOrder="DESC";
+			}
+			$html .="<th>
+				<a href='?=".$q."&sort=date&order=".$dateOrder."'>Kuupäev
+				</a>
+			</th>";
+			
+			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
+				$NumberofStepsOrder="DESC";
+			}
+			$html .="<th>
+				<a href='?=".$q."&sort=NumberofSteps&order=".$NumberofStepsOrder."'>Sammude arv
+				</a>
+			</th>";
+			
+			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
+				$LandLengthOrder="DESC";
+			}
+			$html .="<th>
+				<a href='?=".$q."&sort=LandLength&order=".$LandLengthOrder."'>Käidud maa pikkus km-s
+				</a>
+			</th>";
+			
 		$html .="</tr>";
 	
 		foreach($people as $p){
