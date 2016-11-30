@@ -82,14 +82,16 @@
 	
 ?>
 <?php require("../header.php"); ?>
+
 <div class "data" style="padding-left:10px;">
 
-<h1>Andmed</h1>
-<p> 
-	Tere tulemast <a href="user.php"><?=$_SESSION["email"];?>!</a>
-	<a href="?logout=1">Logi välja</a>
-</p>
-
+	<div align="center"><h1>Avaleht</h1>
+		<p> 
+			Tere tulemast <a href="user.php"><?=$_SESSION["email"];?>!</a>
+			<br> <a href="?logout=1">Logi välja</a>
+		</p>
+	</div>
+	
 <form method="POST"> 
 <label>Raamatu autor</label><br>
 			
@@ -102,15 +104,16 @@
 	<input type="submit" value="Salvesta">	
 </form>
 <br>
+
+
+<h2>Loetud raamatud</h2>
 <form>
-<label>Otsing</label><br>
 	<input type="search" name="q" value="<?=$q;?>">
 	<input type="submit" value="Otsi">
 </form>
-
-<h2>Loetud raamatud</h2>
-
 </div>
+<br>
+
 <?php
 
 	$html = "<table class='table table-striped'>";

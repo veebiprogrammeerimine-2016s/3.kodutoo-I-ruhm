@@ -46,19 +46,26 @@
 	//var_dump($userFavorites);
 ?>
 <?php require("../header.php"); ?>
-<a href="data.php"> < tagasi</a>
 
-<div class "edit" style="padding-left:10px;">
-
-<h1>Minu konto</h1> 
-
-<p>
-	Tere tulemast <?=$_SESSION["email"];?>!
-	<a href="?logout=1">Logi välja</a>
-</p>
-
+<div class "data" style="padding-left:10px;">
+<div align="center"><h1>Minu konto</h1>
+	<p>
+		<a href="data.php">Tagasi avalehele</a><br>
+		<a href="?logout=1">Logi välja</a>
+	</p>
+</div>
 
 <h2>Minu lemmikraamatud</h2>
+
+<form method="POST">
+					
+	<label>Raamatu nimi</label><br>
+					
+	<input name="favorite" type="text">
+	<input type="submit" value="Salvesta">
+	
+</form>
+
 <?php
     
     $listHtml = "<ul>";
@@ -73,37 +80,25 @@
 	echo $listHtml;
     
 ?>
-<form method="POST">
-	
-	<label>Raamatu nimi</label><br>
-	
-	<input name="favorite" type="text">
-	<input type="submit" value="Salvesta">
-	
-</form>
-
-
 
 <h2>Kasutajate lemmikraamatud</h2>
 <form method="POST">
-	
-	<label>Raamatu nimi</label><br>
-	<select name="userFavorite" type="text">
-        <?php
-            
-            $listHtml = "";
-        	
-        	foreach($favorites as $i){
-        		
-        		$listHtml .= "<option value='".$i->id."'>".$i->favorite."</option>";
-        	}
-        	echo $listHtml;   
-        ?>
-    </select>
-    	
-	<input type="submit" value="Lisa">
-	
-</form>
+			
+<label>Raamatu nimi</label><br>
+<select name="userFavorite" type="text">
 
+<?php
+					
+	$listHtml = "";
+					
+	foreach($favorites as $i){		
+		$listHtml .= "<option value='".$i->id."'>".$i->favorite."</option>";}
+	echo $listHtml;   
+?>
+</select>
+				
+<input type="submit" value="Lisa">
+			
+</form>
 </div>
 <?php require("../footer.php"); ?>
