@@ -271,11 +271,11 @@
 				$html .="<td>".$p->date."</td>";
 				$html .="<td>".$p->NumberofSteps."</td>";
 				$html .="<td>".$p->LandLength."</td>";
-				//$html .="<td style=' background-color:".$p->Color."; '>".$p->Color."</td>";
-				//<img width="200" src=' ".$url." '>
+				
+				$html .= "<td><a href='edit.php?id=".$p->id."'>Muuda</a></td>";
+				
 			
-			
-			$html .="</tr>";
+		    $html .="</tr>";
 		
 		}
 	$html .="</table>";

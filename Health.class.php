@@ -20,6 +20,21 @@ class Health{
 		$stmt->close();
 	}
 	
+	function update($id, $Gender, $Age, $date, $NumberofSteps, $LandLength){
+		
+		
+		$stmt = $this->connection->prepare("UPDATE HealthCondition SET Gender=?, Age=?, date=?, NumberofSteps=?, LandLength=? WHERE id=? AND deleted IS NULL");
+		$stmt->bind_param("siiiii",$Gender, $Age, $date, $NumberofSteps, $LandLength, $id);
+		
+		// kas õnnestus salvestada
+		if($stmt->execute()){
+			// õnnestus
+			echo "Salvestus õnnestus!";
+		}
+		
+		$stmt->close();
+	}
+	
 	function get($q, $sort, $order){
 			$allowedSort=["id", "Gender", "Age", "date", "NumberofSteps", "LandLength"];
 				
@@ -85,7 +100,42 @@ class Health{
 	
 	}
 
+	function getSingle($edit_id){
 
+		$stmt = $this->connection->prepare("SELECT Gender, Age, date, NumberofSteps, LandLength FROM HealthCondition WHERE id=? AND deleted IS NULL");
+
+		$stmt->bind_param("i", $edit_id);
+		$stmt->bind_result($Gender, $Age, $date, $NumberofSteps, $LandLength);
+		$stmt->execute();
+		
+		//tekitan objekti
+		$Health = new Stdclass();
+		
+		//saime ühe rea andmeid
+		if($stmt->fetch()){
+			// saan siin alles kasutada bind_result muutujaid
+			$Health->Gender = $Gender;
+			$Health->Age = $Age;
+			$Health->date = $date;
+			$Health->NumberofSteps = $NumberofSteps;
+			$Health->LandLength = $LandLength;
+			
+			
+		}else{
+			// ei saanud rida andmeid kätte
+			// sellist id'd ei ole olemas
+			// see rida võib olla kustutatud
+			header("Location: data.php");
+			exit();
+		}
+		
+		$stmt->close();
+		
+		
+		return $Health;
+		
+	}
+	
 	function savePeople ($Gender, $Age, $date, $NumberofSteps, $LandLength){
 			
 			//käsk
