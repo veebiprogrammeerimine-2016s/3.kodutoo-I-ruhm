@@ -105,7 +105,7 @@
 		exit();		
 		}
 
-	$people=$Health->getAllPeople();
+	//$people=$Health->getAllPeople();
 	
 	//var_dump($people[1]);
 	
@@ -225,6 +225,7 @@
 				</a>
 			</th>";
 			
+			$AgeOrder="ASC";
 			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
 				$AgeOrder="DESC";
 			}
@@ -233,6 +234,7 @@
 				</a>
 			</th>";
 			
+			$dateOrder="ASC";
 			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
 				$dateOrder="DESC";
 			}
@@ -241,6 +243,7 @@
 				</a>
 			</th>";
 			
+			$NumberofStepsOrder="ASC";
 			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
 				$NumberofStepsOrder="DESC";
 			}
@@ -249,6 +252,7 @@
 				</a>
 			</th>";
 			
+			$LandLengthOrder="ASC";
 			if(isset($_GET["order"]) && $_GET["order"]=="ASC"){
 				$LandLengthOrder="DESC";
 			}
@@ -259,7 +263,7 @@
 			
 		$html .="</tr>";
 	
-		foreach($people as $p){
+		foreach($HealthData as $p){
 			$html .="<tr>";
 				$html .="<td>".$p->id."</td>";
 				$html .="<td>".$p->Gender."</td>";

@@ -8,10 +8,22 @@ class Health{
 		$this->connection=$mysqli;
 	}
 
+	function delete($id){
+		$stmt=$this->connection->prepare("UPDATE HealthCondition SET deleted=NOW() WHERE id=? AND deleted IS NULL");
+		$stmt->bind_param("i", $id);
+		
+		//kas õnnestus salvestada
+		if($stmt->execute()){
+			//õnnestus
+			echo "Kustutamine õnnestus!";
+		}
+		$stmt->close();
+	}
+	
 	function get($q, $sort, $order){
 			$allowedSort=["id", "Gender", "Age", "date", "NumberofSteps", "LandLength"];
 				
-			if(!in_array($sort, $allowedsort)){
+			if(!in_array($sort, $allowedSort)){
 				$sort="id";
 			}
 			$orderBy="ASC";
@@ -20,24 +32,26 @@ class Health{
 				$orderBy="DESC";
 			}
 			echo "Sorteerin: ".$sort." ".$orderBy."";
-	
-	
+				
 		//kas otsib
 		if($q!=""){
 			
 			$stmt=$this->connection->prepare("
 			SELECT id, Gender, Age, date, NumberofSteps, LandLength
 			FROM HealthCondition
+			WHERE deleted IS NULL
+			AND (Gender LIKE ? OR Age LIKE ? OR date LIKE ? OR NumberofSteps LIKE ? OR LandLength LIKE ?)
 			ORDER BY $sort $orderBy
 			
 			");
 			$searchWord="%".$q."%";
-			$stmt->bind_param("siiii", $searchWord, $searchWord, $searchWord, $searchWord, $searchWord);
+			$stmt->bind_param("sssss", $searchWord, $searchWord, $searchWord, $searchWord, $searchWord);
 			
 		}else{
 			$stmt=$this->connection->prepare("
 				SELECT id, Gender, Age, date, NumberofSteps, LandLength
 				FROM HealthCondition
+				WHERE deleted IS NULL
 				ORDER BY $sort $orderBy
 			
 			");
@@ -47,6 +61,26 @@ class Health{
 		echo $this->connection->error;
 		$stmt->bind_result($id, $Gender, $Age, $date, $NumberofSteps, $LandLength);
 		$stmt->execute();
+		
+				//tekitan massiivi
+		$result=array();
+			//seni kuni on üks rida andmeid saada (10 rida=10 korda)
+			while($stmt->fetch()) {
+				$person=new StdClass();
+				$person->id=$id;
+				$person->Gender=$Gender;
+				$person->Age=$Age;
+				$person->date=$date;
+				$person->NumberofSteps=$NumberofSteps;
+				$person->LandLength=$LandLength;
+				
+				//echo $Color."<br>";
+				array_push($result, $person);
+			}
+			$stmt->close();
+			
+			return $result;
+
 		
 	
 	}
@@ -96,7 +130,6 @@ class Health{
 				array_push($result, $person);
 			}
 			$stmt->close();
-			$this->connection->close();
 			
 			return $result;
 			
