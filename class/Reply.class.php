@@ -56,11 +56,11 @@
 	}
 	
 	function checkUser($topic_id, $user_id, $reply_id) {
-		$stmt = $this->connection-> prepare("SELECT content FROM replies WHERE topic_id=? and user_id=?");
+		$stmt = $this->connection-> prepare("SELECT content FROM replies WHERE id=? and topic_id=? and user_id=?");
 		
 		echo $this->connection->error;
 		
-		$stmt->bind_param("ii", $topic_id, $user_id);
+		$stmt->bind_param("iii", $reply_id, $topic_id, $user_id);
 		$stmt->bind_result($content);
 		$stmt->execute();
 		

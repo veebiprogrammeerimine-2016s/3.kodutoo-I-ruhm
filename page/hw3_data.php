@@ -78,11 +78,28 @@
 	}
 	
 	$topics = $Topic->addToArray($q, $sort, $order);
-	//var_dump($_GET);
 	
+	$sort_name = "";
+	if(!isset($_GET["sort"])){
+		$sort_name = "teema";
+	} else {
+		if($_GET["sort"] == "topic"){
+			$sort_name = "teema";
+		}
+		if($_GET["sort"] == "user"){
+			$sort_name = "kasutaja";
+		}
+		if($_GET["sort"] == "email"){
+			$sort_name = "e-posti";
+		}
+		if($_GET["sort"] == "created"){
+			$sort_name = "lisamise kuupäeva";
+		}
+	}
 ?>
 
 <?php require("../header.php")?>
+<div class="data" style="padding-left:20px;"> 
 <h1>Data</h1>
 <p>
 	Tere tulemast <?=$_SESSION["firstName"];?>!
@@ -105,53 +122,61 @@
 	<input type="submit" value="Otsi">
 </form>
 <p>
-<!--Sorteerimine <?=$_GET["sort"];?> <?=$_GET["order"];?>.-->
+Sorteerimine <?=$sort_name;?> järgi.
 </p>
 <p>
 <?php
-	$html = "<table>";
+	$html = "<table class='table table-striped table-hover'>";
 		$html .= "<tr>"; 
 			$topicOrder = "ASC";
 			$userOrder = "ASC";
 			$emailOrder = "ASC";
 			$dateOrder = "ASC";
+			$topicArrow = "&rarr;";
+			$userArrow = "&rarr;";
+			$emailArrow = "&rarr;";
+			$dateArrow = "&orarr;";
 			
 			if (isset($_GET["sort"]) && $_GET["sort"] == "topic") {
 				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
 					$topicOrder="DESC"; 
+					$topicArrow = "&larr;";
 				}
 			}
 			
 			if (isset($_GET["sort"]) && $_GET["sort"] == "user") {
 				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
-					$userOrder="DESC"; 
+					$userOrder="DESC";
+					$userArrow = "&larr;";
 				}
 			}
 			
 			if (isset($_GET["sort"]) && $_GET["sort"] == "email") {
 				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
 					$emailOrder="DESC"; 
+					$emailArrow = "&larr;";
 				}
 			}
 			
-			if (isset($_GET["sort"]) && $_GET["sort"] == "date") {
+			if (isset($_GET["sort"]) && $_GET["sort"] == "created") {
 				if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
-					$dateOrder="DESC"; 
+					$dateOrder="DESC";
+					$dateArrow = "&olarr;";					
 				}
 			}
 		
 		$html .= "<th>
-			<a href='?q=".$q."&sort=topic&order=".$topicOrder."'>
-			<font size='4'>Teema</font></th>";
+			<a href='?q=".$q."&sort=topic&order=".$topicOrder."' style='text-decoration:none'>
+			<font size='4'>Teema</font><br><font size='2'>A</font>".$topicArrow."</th>";
 			$html .= "<th>
-			<a href='?q=".$q."&sort=user&order=".$userOrder."'>
-			<font size='4'>Kasutaja</font></th>";
+			<a href='?q=".$q."&sort=user&order=".$userOrder."' style='text-decoration:none'>
+			<font size='4'>Kasutaja</font><br><font size='2'>A</font>".$userArrow."</th>";
 			$html .= "<th>
-			<a href='?q=".$q."&sort=email&order=".$emailOrder."'>
-			<font size='4'>Kasutaja e-post</font></th>";
+			<a href='?q=".$q."&sort=email&order=".$emailOrder."' style='text-decoration:none'>
+			<font size='4'>Kasutaja e-post</font><br><font size='2'>A</font>".$emailArrow."</th>";
 			$html .= "<th>
-			<a href='?q=".$q."&sort=date&order=".$dateOrder."'>
-			<font size='4'>Lisamise kuupäev</font></th>";
+			<a href='?q=".$q."&sort=created&order=".$dateOrder."' style='text-decoration:none'>
+			<font size='4'>Lisamise kuupäev</font><br><font size='2'>&#128336;</font>".$dateArrow."</th>";
 		$html .= "</tr>";
 
 
@@ -207,4 +232,5 @@
 		}
 </script>
 </p>
+</div>
 <?php require("../footer.php")?>

@@ -153,6 +153,7 @@
 		}
 ?>
 <?php require("../header.php")?>
+	<div class="login" style="padding-left:20px;"> <!-- Oleneb ekraanist, kuhu sisu jätab -->
 		<h1>Logi sisse</h1>	
 		
 		<form method="POST">
@@ -212,5 +213,6 @@
 			
 			<input type="submit" value = "Loo kasutaja">
 		</form>
+	</div>
 		 <!--Mvp ideeks on üldine foorum, kuhu saab postitada erinevaid teemasid ning kommenteerida olemasolevaid. Vastates teiste kasutajate teemadele saab koguda punkte ning neid kasutada oma teemadele "high priority" märkimisel või toodete/autasude lunastamisel. "High priority" eest saab oma teema tõsta teiste seast esile/ettepoole ning sellele motiveerib rohkem vastama, kuna võimalus on teenida rohkem punkte. Väga originaalset ideed hetkel ei ole, aga ehk tuleb teostamise käigus ning võib-olla idee ka muutub natukene.-->
 <?php require("../footer.php")?>
