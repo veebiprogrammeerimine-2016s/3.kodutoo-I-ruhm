@@ -49,10 +49,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<br><br>
-<a href="data.php">Tagasi</a>
 
-<h2>Muuda</h2>
+<h2>Muuda andmeid</h2>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
 	<input type="hidden" name="id" value="<?=$_GET["id"];?>" > 
   	<label for="Gender" >Sugu</label><br>
@@ -74,10 +72,11 @@
 	<input type="submit" name="update" value="Salvesta">
   </form>
   
-  
-  <br>
+
   <br>
   <a href="?id=<?=$_GET["id"];?>&delete=true">Kustuta</a>
+  <br><br>
+  <a href="data.php">Tagasi</a>
   
 </body>
 </html>

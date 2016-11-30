@@ -46,7 +46,7 @@ class Health{
 			if($order=="DESC"){
 				$orderBy="DESC";
 			}
-			echo "Sorteerin: ".$sort." ".$orderBy."";
+			//echo "Sorteerin: ".$sort." ".$orderBy."";
 				
 		//kas otsib
 		if($q!=""){

@@ -89,12 +89,6 @@
 		empty($_POST["NumberofStepsError"]) &&
 		empty($_POST["LandLengthError"])
 		){
-			
-			//$Gender=cleanInput($_POST["Gender"]);
-			//$Age=cleanInput($_POST["Age"]);
-			//$date=cleanInput($_POST["date"]);
-			//$NumberofSteps=cleanInput($_POST["NumberofSteps"]);
-			//$LandLength=cleanInput($_POST["LandLength"]);
 		
 			$date =  new DateTime($_POST['date']);
 			$date =  $date->format('Y-m-d');
@@ -106,8 +100,6 @@
 		}
 
 	//$people=$Health->getAllPeople();
-	
-	//var_dump($people[1]);
 	
 	//saan kõik kasutajate andmed
 	
@@ -185,14 +177,6 @@
 			
 </form>
 
-<!--<h2>Varasemad andmed</h2>
-	
-	foreach($people as $p){
-		
-		echo "<h3 style=' Color:".$p->Color."; '>".$p->Gender."</h3>";
-		
-	}
--->
 
 <br><br>
 <h2>Kasutajate andmed</h2>

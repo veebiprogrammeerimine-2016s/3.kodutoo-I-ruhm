@@ -12,16 +12,10 @@ class User{
 
 	function signup ($Name, $Age, $Email, $password, $gender){
 		
-		//käsk
 		$stmt=$this->connection->prepare("INSERT INTO user_sample (Name, Age, Email, password, gender) VALUES(?,?,?,?,?)");
 		
 		echo $this->connection->error;
 		
-		//asendan küsimärgi väärtustega
-		//iga muutuja kohta üks täht, mis tüüpi muutuja on
-		//s-string
-		//i-integer
-		//d-double/float
 		$stmt->bind_param("sisss",$Name, $Age, $Email, $password, $gender);
 		
 		if($stmt->execute()) {
@@ -48,11 +42,8 @@ class User{
 			
 		echo $this->connection->error;
 		
-		// asendan küsimärgi
-		
 		$stmt->bind_param("s", $Email);
 		
-		//määran tulpadele muutujad
 		$stmt->bind_result($id, $EmailFromDB, $passwordFromDB, $created, $NameFromDB);
 		
 		$stmt->execute();
