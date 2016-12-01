@@ -15,7 +15,7 @@
 		
 		if($stmt->execute()) {
 			//echo "Vastus on lisatud.<br><br>";
-			$_SESSION["reply_message"] = "VASTUS LISATUD!";
+			$_SESSION["reply_message"] = "<p style='color:green;'>VASTUS LISATUD!</p>";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
@@ -132,7 +132,7 @@
 		if($stmt->execute()){
 			// õnnestus
 			//echo "Muudatus salvestatud!";
-			$_SESSION["reply_change_message"] = "VASTUS MUUDETUD!";
+			$_SESSION["reply_change_message"] = "<p style='color:green;'>VASTUS MUUDETUD!</p>";
 		}
 		
 		$stmt->close();
@@ -157,7 +157,7 @@
 
  		if($stmt->execute()){
  			//echo "Kustutamine õnnestus!";
-			$_SESSION["reply_del_message"] = "VASTUS KUSTUTATUD!";
+			$_SESSION["reply_del_message"] = "<p style='color:red;'>VASTUS KUSTUTATUD!</p>";
  		}
  		
  		$stmt->close();

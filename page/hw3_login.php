@@ -171,9 +171,7 @@
 		</form>
 		
 		<br>
-		<p>
-		<b><font color="green"> <?=$msg;?> </font></b>
-		</p>
+		<p style="color:green;"> <b> <?=$msg;?> </b> </p>
 		<h1>Loo kasutaja</h1>	
 		
 		<form method="POST">

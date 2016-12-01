@@ -27,9 +27,10 @@
 		$msg = "";
 		if($stmt->execute()) {
 			//echo "Salvestamine õnnestus.";
-			$msg = "Kasutaja loodud!";
+			$msg = "KASUTAJA LOODUD!";
 		} else {
-			echo "ERROR".$stmt->error;
+			//echo "ERROR".$stmt->error;
+			$msg = "<p style='color:red;'>SELLINE E-POST ON JUBA KASUTUSEL!</p>";
 		}
 		
 		return $msg;

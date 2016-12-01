@@ -129,9 +129,9 @@
 			Tere tulemast <?=$_SESSION["firstName"];?>!
 			<a href="?logout=1">Logi välja</a>
 		</b></p>
+		<p> <b> <?=$topic_del_msg;?> </b> </p>
 		<h1>Foorum</h1>
-		<p><b><font class="added" > <?=$topic_msg;?> </font></b></p>
-		<p><b><span class="deleted" > <?=$topic_del_msg;?> </span></b></p>
+		<p> <b> <?=$topic_msg;?> </b> </p>
 		<p><b>Loo uus teema</b></p>
 		<form method="POST">
 			<label>Pealkiri:</label>
@@ -162,7 +162,7 @@
 					$topicArrow = "&larr;";
 					$userArrow = "&larr;";
 					$emailArrow = "&larr;";
-					$dateArrow = "&orarr;";
+					$dateArrow = "&olarr;";
 					
 					if (isset($_GET["sort"]) && $_GET["sort"] == "topic") {
 						if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
@@ -188,7 +188,7 @@
 					if (isset($_GET["sort"]) && $_GET["sort"] == "created") {
 						if (isset($_GET["order"]) && $_GET["order"] == "ASC") {
 							$dateOrder="DESC";
-							$dateArrow = "&olarr;";					
+							$dateArrow = "&orarr;";					
 						}
 					}
 				

@@ -18,6 +18,8 @@
 		header("Location: hw3_data.php");
 	}
 	
+	//kunagi võiks ka teha ifDel, kui kasutajad postitusi nt taastama tahavad hakata
+	
 	$reply = $Reply->find($_GET["topic"], $_GET["reply"], $_SESSION["userId"]);
 	
 	//kas kasutaja uuendab andmeid
@@ -70,7 +72,7 @@
 
 	<div class="edit" style="padding-left:20px;">
 		<h2><a href="hw3_topic.php?id=<?php echo $topic_id;?>" style="text-decoration:none"> < Tagasi </a></h2>
-		<p><b><font class="change" > <?=$reply_change_msg;?> </font></b></p>
+		<p><b><?=$reply_change_msg;?></b></p>
 		<h1>Muuda või kustuta oma vastus</h1>
 		<form method="post" >
 			<input type="hidden" name="id" value="<?=$_GET["id"];?>" > 

@@ -69,8 +69,8 @@
 		<div class="row">
 			<div class="col-sm-6"> 
 				<h2><a href="hw3_data.php" style="text-decoration:none"> < Tagasi </a></h2>
-				<p><b><font class="added" > <?=$reply_msg;?> </font></b></p>
-				<p><b><font class="removed" > <?=$reply_del_msg;?> </font></b></p>
+				<p><b> <?=$reply_msg;?></b></p>
+				<p><b> <?=$reply_del_msg;?></b></p>
 				
 
 				<h1><?php echo $topic->subject;?></h1>

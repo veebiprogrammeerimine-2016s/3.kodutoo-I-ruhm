@@ -15,7 +15,7 @@
 		
 		if($stmt->execute()) {
 			//echo "Salvestamine õnnestus.<br>";
-			$_SESSION["topic_message"] = "TEEMA LISATUD!";
+			$_SESSION["topic_message"] = "<p style='color:green;'>TEEMA LISATUD!</p'>";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
@@ -152,7 +152,7 @@
  		if($stmt->execute()){
  			// õnnestus
  			//echo "Kustutamine õnnestus!";
-			$_SESSION["topic_message"] = "TEEMA KUSTUTATUD!";
+			$_SESSION["topic_message"] = "<p style='color:red;'>TEEMA KUSTUTATUD!</p>";
  		}
  		
  		$stmt->close();
