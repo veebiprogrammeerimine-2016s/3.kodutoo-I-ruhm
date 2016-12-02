@@ -12,6 +12,12 @@
 	require("../class/Helper.class.php");
 	$Helper = new Helper($mysqli);
 	
+	if (!isset($_SESSION["userId"])) { 
+	
+		header("Location:hw3_login.php");
+		exit(); 
+	}
+	
 	$newReplyError = "";
 	//$reply_id = "";
 	if (isset ($_GET["id"]) ){ 
