@@ -144,12 +144,12 @@
 		return $del_topic;
 	}
 	
-	function del($topic_id){
-		$stmt = $this->connection->prepare("UPDATE topics SET deleted=NOW() WHERE id=? AND deleted IS NULL");
- 		$stmt->bind_param("i",$topic_id);
+	function del($topic_id, $user_id){
+		$stmt = $this->connection->prepare("UPDATE topics SET deleted=NOW() WHERE id=? AND user_id=? AND deleted IS NULL");
+ 		$stmt->bind_param("ii",$topic_id, $user_id);
 		
 		// kas õnnestus salvestada
- 		if($stmt->execute()){
+		if($stmt->execute()){
  			// õnnestus
  			//echo "Kustutamine õnnestus!";
 			$_SESSION["topic_message"] = "<p style='color:red;'>TEEMA KUSTUTATUD!</p>";

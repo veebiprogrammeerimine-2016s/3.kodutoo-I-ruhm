@@ -40,7 +40,9 @@
 	
 	if(isset($_GET["delete"]) && isset($_GET["id"])) {
  		
- 		$Topic->del($_GET["id"]);
+		//lisan userId juurde, et igaüks, kes lingile õige urli sisestab ei saaks kustutada
+		//TEEMA KUSTUTATUD jääb, aga vähemalt vale kasutaja kirjeid ei mõjuta!
+ 		$Topic->del($_GET["id"], $_SESSION["userId"]);
  		header("Location: hw3_data.php");
  		exit();
  	}
