@@ -10,6 +10,7 @@ $Helper = new Helper();
 //kas kasutaja on sisse logitud
 
 if  (isset ($_SESSION ["userId"])) {
+  //suunab sisselogimise lehele
       header ("Location: data3.php");
       exit ();
 }
@@ -36,7 +37,7 @@ $signUpPasswordError = "";
 $signUpNameError = "";
 $signUpFamilyNameError = "";
 $gender = "";
-$Helper = "";
+
 
 // //SISSELOGIMISMUUTUJAD
 // $loginEmail = "";
@@ -181,22 +182,22 @@ if (  isset($_POST["signUpPassword"]) &&
 $error = " ";
 // kontrollin, et kasutaja täitis väljad ja võib sisse logida
 if ( isset ($_POST ["loginEmail"]) &&
-   isset ($_POST ["loginPassword"]) &&
-   !empty ($_POST ["loginEmail"]) &&
-   !empty ($_POST ["loginPassword"])
+     isset ($_POST ["loginPassword"]) &&
+     !empty ($_POST ["loginEmail"]) &&
+     !empty ($_POST ["loginPassword"])
 ) {
 
 
 // login sisse
 
           $error = $User->login($Helper->cleanInput($_POST["loginEmail"]), $Helper->cleanInput($_POST["loginPassword"]));
-
-
+}
 ?>
 
 
   <?php require("../header.php"); ?>
-  <div class = "container" >
+
+  <div class = "container">
   <div class = "row">
   <div class ="col-sm-3 col-sm-offset-3">
 
@@ -258,17 +259,13 @@ if ( isset ($_POST ["loginEmail"]) &&
                 <input type="radio" name="gender" value="other" > Muu<br>
                <?php } ?>
                <input type = "submit" value = "REGISTREERU">
-
-
-              </form>
+          </form>
         </div>
-
-
       </div>
 </div>
+
 
 <p> Wanna go clubbing? Can't find a proper place? Me aitame Sind! ClubOGo aitab valida klubide seast <br>
   külastajate
   hinnangutele tuginedes selle õige. Et ükski pilet poleks "waste of money". Liitu kohe!</p>
-
 <?php require("../footer.php"); ?>

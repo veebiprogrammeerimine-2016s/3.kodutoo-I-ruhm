@@ -1,23 +1,22 @@
 <?php
 
-
   require ("../functions.php");
-  // require ("../class/Helper.class.php");
   require ("../class/Club.class.php");
   $Club = new Club ($mysqli);
 
-  //PMST OK SELLEGA, lõpuosa veidi erinev
-
+  require("../class/Helper.class.php");
+	$Helper = new Helper();
   //lisame kontrolli, kas on kasutaja sisse loginud. kui ei ole, siis
   //suunata login lehele
-
-//kas ?logout on aadressireal
+  //kas ?logout on aadressireal
 
 $clubName = "";
 $clubLocation = "";
 $clubNameError = "";
 $clubLocationError = "";
 $rate = "";
+$Helper = "";
+
 if (!isset($_SESSION["userId"])){
 
 		//suunan sisselogimise lehele
@@ -27,10 +26,10 @@ if (!isset($_SESSION["userId"])){
 
 if (isset ($_GET["logout"])) {
   session_destroy();
-
   header ("Location: login3_kodune.php");
   exit (); // ära edasi koodi käivita, ütleb käsk "exit", seega alumisi koodiridu ei käivitata
 }
+
 $msg = "";
 if(isset($_SESSION["message"])){
   $msg = $_SESSION["message"];
@@ -44,33 +43,16 @@ if(isset($_SESSION["message"])){
 
 
 if ( isset($_POST["clubName"]) &&
-		isset($_POST["clubName"]) &&
-		!empty($_POST["clubLocation"]) &&
-		!empty($_POST["clubLocation"])) {
+		 isset($_POST["clubName"]) &&
+		 !empty($_POST["clubLocation"]) &&
+		 !empty($_POST["clubLocation"]) &&
+     !empty ($_POST["clubRate"]) &&
+     !empty ($_POST["clubRate"])
+   ) {
 
-		$Club->save($Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"], $Helper->cleanInput($_POST["clubRate"]));
+		$Club->save($Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"]), $Helper->cleanInput($_POST["clubRate"]));
 	}
 
-
-// if (isset ($_POST ["clubName"]) )  {
-//   if (empty ($_POST ["clubName"] ) ) {
-//      $clubNameError = "See väli on kohustuslik!";
-//
-//    } else {
-//     $clubName = $_POST ["clubName"];
-//    }
-//        }
-//
-// if (isset ($_POST ["clubLocation"])) {
-//   if (empty ($_POST ["clubLocation"])) {
-//      $clubLocationError = "See väli on kohustuslik!";
-//
-//   } else {
-//     $clubLocation = $_POST ["clubLocation"];
-//
-// $Club->save($Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"]));
-// //saveClubs ($_POST ["clubName"], $_POST ["clubLocation"], $_POST ["rate"] );
-//   }
 
 
 if (isset ($_GET["q"])) {
@@ -82,7 +64,7 @@ if (isset ($_GET["q"])) {
     		$q = "";
 }
 
-$sort = "rate";
+$sort = "id";
 	$order = "ASC";
 
 	if(isset($_GET["sort"]) && isset($_GET["order"])) {
@@ -93,20 +75,14 @@ $sort = "rate";
 	//otsisõna fn sisse
 	$clubData = $Club->get($q, $sort, $order);
 
-
-//  var_dump($people);
-//$people = getAllClubs(); //käivitan funktsiooni //esialgne : $people = getAllClubs();
-//var_dump($people);
 ?>
 
+<?php require("../header.php"); ?>
 <h1> Andmed </h1>
-
-<a href = "?logout=1"> Logi välja    </a> -->
-
 <?=$msg;?>
+
 <p>
 	Tere tulemast <a href="user.php"><?=$_SESSION["userEmail"];?>!</a>
-
 	<a href="?logout=1">Logi välja</a>
 </p>
 
@@ -157,116 +133,110 @@ $sort = "rate";
         <input type="radio" name="rate" value="5" > 5<br><br>
         <?php } ?>
 
-  <input type = "submit"  value = "EDASTA HINNANG">
+  <input type = "submit"  value = "SALVESTA HINNANG">
 
 </form>
 
 
+
+
+
 <h2>Varasemad hinnangud</h2>
-<?php
-	//foreach($people as $p){
-
-	//	echo 	"<h3 style=' color:".$p->clubLocation."; '>".$p->clubName."</h3>";
-	//}
-?>
-
 <form>
 	<input type="search" name="q" value="<?=$q;?>">
 	<input type="submit" value="Otsi">
 </form>
 
 <?php
-	$html = "<table>";
-		$html .= "<tr>";
-			//$html .= "<th>id</th>";
-			$html .= "<th>KLUBI</th>";
-			$html .= "<th>ASUKOHT</th>";
-			$html .= "<th>HINNANG</th>";
 
-		$html .= "</tr>";
+$html = "<table class='table table-striped'>";
 
-		//foreach($people as $p){
+$html .= "<tr>";
 
-			$html .= "<tr>";
-      $idOrder = "ASC";
-		  $arrow = "&darr;";
-	   	if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
-			     $idOrder = "DESC";
-	         $arrow = "&uarr;";
+    $idOrder = "ASC";
+    $arrow = "&darr;";
+    if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+         $idOrder = "DESC";
+         $arrow = "&uarr;";
+      }
 
-        }
-        $html .= "<th>
-        	<a href='?q=".$q."&sort=rate&order=".$idOrder."'>
+      $html .= "<th>
+            <a href='?q=".$q."&sort=id&order=".$idOrder."'>
 
-						rate ".$arrow."
-					</a>
-				 </th>";
+              id ".$arrow."
+              </a>
+            </th>";
 
-         $html .= "</tr>";
+        $rateOrder = "ASC";
+     		$arrow = "&darr;";
+     		if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+     			$rateOrder = "DESC";
+     			$arrow = "&uarr;";
 
-         	//iga liikme kohta massiivis
-         	foreach($clubData as $c){
-         		// iga auto on $c
-         		//echo $c->plate."<br>";
+     }
+     $html .= "<th>
+     					<a href='?q=".$q."&sort=rate&order=".$rateOrder."'>
+     						rate
+     					</a>
+     				</th>";
+     $html .= "<th>
+     					<a href='?q=".$q."&sort=name'>
+     						name
+     					</a>
+     				 </th>";
+$html .= "</tr>";
 
-         		$html .= "<tr>";
-         			//$html .= "<td>".$c->id."</td>";
-         			$html .="<td>".$c->clubName."</td>";
-              $html .="<td>".$c->clubLocation."</td>";
-              //$html .="<td>".$c->clubRate."</td>";
+$html .= "<th>KLUBI</th>";
+$html .= "<th>ASUKOHT</th>";
+$html .= "<th>HINNANG</th>";
 
-              //HINNE JA TAUSTAVÄRV
+//iga liikme kohta massiivis
 
+foreach($clubData as $c){
+         		// iga klubi on $c
+         		//echo $c->name."<br>";
 
-                      if ($c->clubRate == 1) {
-                      $html .= "<td style=' background-color: red; '>".$c->clubRate."</td>";
-                      }
+$html .= "<tr>";
+      $html .= "<td>".$c->id."</td>";
+      $html .= "<td>".$c->clubName."</td>";
+      $html .= "<td>".$c->clubLocation."</td>";
+      $html .= "<td>".$c->clubRate."</td>";
+      $html .= "</tr>";
 
-                      if ($c->clubRate == 2) {
-                        $html .= "<td style=' background-color: salmon; '>".$c->clubRate."</td>";
-                      }
+      if ($c->clubRate == 1) {
+        $html .= "<td style=' background-color: red; '>".$c->clubRate."</td>";
+      }
+      if ($c->clubRate == 2) {
+        $html .= "<td style=' background-color: salmon; '>".$c->clubRate."</td>";
+      }
+      if ($c->clubRate == 3) {
+        $html .= "<td style=' background-color: pink; '>".$c->clubRate."</td>";
+      }
 
-                      if ($c->clubRate == 3) {
-                        $html .= "<td style=' background-color: pink; '>".$c->clubRate."</td>";
-                      }
+      if ($c->clubRate == 4) {
+        $html .= "<td style=' background-color: thistle; '>".$c->clubRate."</td>";
+      }
+      if ($c->clubRate == 5) {
+        $html .= "<td style=' background-color: lime; '>".$c->clubRate."</td>";
+      }
+      $html .= "<td><a class='btn btn-default btn-sm' href='edit.php?id=".$c->id."'><span class='glyphicon glyphicon-pencil'></span> Muuda</a></td>";
+    }
 
-                      if ($c->clubRate == 4) {
-                        $html .= "<td style=' background-color: thistle; '>".$c->clubRate."</td>";
-                      }
+  $html .= "</table>";
 
-                      if ($c->clubRate == 5) {
-                        $html .= "<td style=' background-color: lime; '>".$c->clubRate."</td>";
+    echo $html;
 
-                      }
-                      $html .= "<td><a href='edit.php?id=".$c->id."'>Muuda=".$c->id."</a></td>"; //KIRJE MUUTMINE
+  $listHtml = "<br><br>";
 
-
-         			        //$html .= "<td style='background-color:".$c->clubRate."'>".$c->clubRate."</td>";
-
-
-
-
-
-         		$html .= "</tr>";
-         	}
-
-         	$html .= "</table>";
-
-         	echo $html;
-
-
-         	$listHtml = "<br><br>";
-
-
-         	foreach($clubData as $c){
+  foreach($clubData as $c){
 
          		$listHtml .= "<h1 style='color:".$c->clubRate."'>".$c->clubName."</h1>";
          		$listHtml .= "<p>color = ".$c->clubRate."</p>";
 
-
          	}
 
-         //	echo $listHtml;
+
+echo $listHtml;
 ?>
 
          <br>

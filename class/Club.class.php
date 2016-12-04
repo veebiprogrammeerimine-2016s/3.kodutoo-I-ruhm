@@ -37,6 +37,7 @@ class Club {
 
 		$orderBy = "ASC";
 
+
 		if ($order == "DESC") {
 				$orderBy = "DESC";
 
@@ -73,6 +74,7 @@ class Club {
 		}
 
 		echo $this->connection->error;
+
 
 		$stmt->bind_result($id, $clubName, $clubLocation, $clubRate);
 		$stmt->execute();
@@ -111,14 +113,14 @@ class Club {
 		$stmt->execute();
 
 		//tekitan objekti
-		$Club = new Stdclass();
+		$club = new Stdclass();
 
 		//saime ühe rea andmeid
 		if($stmt->fetch()){
 			// saan siin alles kasutada bind_result muutujaid
-      $club->clubName = $name;
-      $club->clubLocation = $location;
-      $club->clubRate = $rate;
+       $club->clubName = $name;
+       $club->clubLocation = $location;
+       $club->clubRate = $rate;
 
 
 

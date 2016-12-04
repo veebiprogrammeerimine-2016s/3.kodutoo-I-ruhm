@@ -9,7 +9,7 @@
 	//kas kasutaja uuendab andmeid
 	if(isset($_POST["update"])){
 
-		$Club->update($Helper->cleanInput($_POST['id']), $Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"], $Helper->cleanInput($_POST["clubRate"]))
+		$Club->update($Helper->cleanInput($_POST['id']), $Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"]), $Helper->cleanInput($_POST["clubRate"]));
 				header("Location: edit.php?id=".$_POST["id"]."&success=true");
         exit();
 	}
