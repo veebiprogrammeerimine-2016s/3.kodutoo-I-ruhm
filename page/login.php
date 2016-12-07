@@ -1,5 +1,5 @@
 <?php
-	require("functions.php");
+	require("../functions.php");
 
 	if (isset ($_SESSION["userId"])) {
 		
@@ -22,7 +22,7 @@
 	if (isset ($_POST["loginEmail"]) ) {
 	
 		if (empty ($_POST["loginEmail"]) ) { 
-			$loginEmailError = "See väli on kohustuslik!";
+			$loginEmailError = "See vÃ¤li on kohustuslik!";
 		} else {
 			$loginEmail = $_POST["loginEmail"];
 		}
@@ -31,7 +31,7 @@
 	if (isset ($_POST["signupUsername"]) ) {
 	
 		if (empty ($_POST["signupUsername"]) ) { 
-			$signupUsernameError = "See väli on kohustuslik!";
+			$signupUsernameError = "See vÃ¤li on kohustuslik!";
 		
 		} else {
 			$signupUsername = $_POST["signupUsername"];
@@ -41,12 +41,12 @@
 	if (isset ($_POST["signupPassword"]) ) {
 	
 		if (empty ($_POST["signupPassword"]) ) { 
-			$signupPasswordError = "See väli on kohustuslik!";
+			$signupPasswordError = "See vÃ¤li on kohustuslik!";
 		
 		} else {
 			
 			if (strlen ($_POST["signupPassword"]) <= 5 ){
-				$signupPasswordError = "Parool peab olema 5 tähemärki pikk!";
+				$signupPasswordError = "Parool peab olema 5 tÃ¤hemÃ¤rki pikk!";
 			}
 		} 
 		
@@ -55,7 +55,7 @@
 	if (isset ($_POST["gender"]) ) {
 	
 		if (empty ($_POST["gender"]) ) { 
-			$genderError = "See väli on kohustuslik!";
+			$genderError = "See vÃ¤li on kohustuslik!";
 		} else {
 			$gender = $_POST["gender"];
 		}
@@ -64,7 +64,7 @@
 	if (isset ($_POST["signupEmail"]) ) {
 	
 		if (empty ($_POST["signupEmail"]) ) { 
-			$signupEmailError = "See väli on kohustuslik!";
+			$signupEmailError = "See vÃ¤li on kohustuslik!";
 		} else {
 			$signupEmail = $_POST["signupEmail"];
 		}
@@ -86,7 +86,7 @@
 		$signupPassword = hash("sha512", $_POST["signupPassword"]);
 		
 		echo "parool ".$_POST["signupPassword"]."<br>";
-		echo "räsi ".$signupPassword."<br>";
+		echo "rÃ¤si ".$signupPassword."<br>";
 		echo "sugu ".$gender."<br>";
 		
 		
@@ -117,7 +117,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Sisselogimise lehekülg</title>
+		<title>Sisselogimise lehekÃ¼lg</title>
 	</head>
 	<body>
 

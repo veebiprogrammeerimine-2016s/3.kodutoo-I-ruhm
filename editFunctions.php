@@ -1,7 +1,7 @@
 <?php
 	require_once("../../config.php");
 	
-	function AllBooksData($edit_id){
+	function AllTrainingData($edit_id){
     
         $database = "if16_epals";
 		
@@ -15,15 +15,15 @@
 		//tekitan objekti
 		$person = new Stdclass();
 		
-		//saime ühe rea andmeid
+		//saime Ã¼he rea andmeid
 		if($stmt->fetch()){
 			// saan siin alles kasutada bind_result muutujaid
 			$person->exercise = $exercise;
 			$person->series = $series;
 			}else{
-				// ei saanud rida andmeid kätte
+				// ei saanud rida andmeid kÃ¤tte
 				// sellist id'd ei ole olemas
-				// see rida võib olla kustutatud
+				// see rida vÃµib olla kustutatud
 				header("Location: data.php");
 				exit();
 		}
@@ -42,10 +42,10 @@
 		$stmt = $mysqli->prepare("UPDATE Training SET a=?, title=? WHERE id=? AND deleted IS NULL");
 		$stmt->bind_param("ssi",$exercise, $series, $id);
 		
-		// kas õnnestus salvestada
+		// kas Ãµnnestus salvestada
 		if($stmt->execute()){
-			// õnnestus
-			echo "salvestus õnnestus!";
+			// Ãµnnestus
+			echo "salvestus Ãµnnestus!";
 		}
 		
 		$stmt->close();
@@ -64,10 +64,10 @@
  		$stmt = $mysqli->prepare("UPDATE Training SET deleted=NOW() WHERE id=? AND deleted IS NULL");
  		$stmt->bind_param("i",$id);
  		
-		// kas õnnestus salvestada
+		// kas Ãµnnestus salvestada
 		if($stmt->execute()){
- 			// õnnestus
- 			echo "salvestus õnnestus!";
+ 			// Ãµnnestus
+ 			echo "salvestus Ãµnnestus!";
  		}
 	
  		$stmt->close();

@@ -17,7 +17,7 @@ class Favorite {
 		$stmt->bind_param("s", $favorite);
 		
 		if($stmt->execute()) {
-			echo "Salvestamine õnnestus";
+			echo "Salvestamine Ãµnnestus";
 		} else {
 		 	echo "ERROR ".$stmt->error;
 		}
@@ -40,11 +40,11 @@ class Favorite {
 			//oli olemas
 			echo "Juba olemas";
 			
-			//ei jätka salvestamisega
+			//ei jÃ¤tka salvestamisega
 			return;
 		}
 		$stmt->close();
-		//jätkan salvestamisega..
+		//jÃ¤tkan salvestamisega..
 		
 		$stmt = $this->connection->prepare("INSERT INTO user_favorites (user_id, favorite_id) VALUES (?, ?)");
 	
@@ -53,9 +53,9 @@ class Favorite {
 		$stmt->bind_param("ii", $_SESSION["userId"],$favorite_id);
 		
 		if($stmt->execute()) {
-			//echo "Salvestamine õnnestus";
+			//echo "Salvestamine Ãµnnestus";
 		} else {
-		 	//echo "ERROR ".$stmt->error;*/ //proovimiseks, kas töötab
+		 	//echo "ERROR ".$stmt->error;*/ //proovimiseks, kas tÃ¶Ã¶tab
 		}
 		$stmt->close();
 		

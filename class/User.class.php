@@ -16,7 +16,7 @@ class User {
 		$stmt->bind_param("ss", $email, $password);
 		
 		if ($stmt->execute()) {
-			echo "Salvestamine ınnestus";
+			echo "Salvestamine √µnnestus";
 		} else {
 			echo "ERROR ".$stmt->error;
 		}
@@ -30,17 +30,17 @@ class User {
 		
 		echo $this->connection->error;
 		
-		//asendan k¸sim‰rgi
+		//asendan k√ºsim√§rgi
 		$stmt->bind_param("s", $email);
 		
-		//m‰‰ran tulpadele muutujad
+		//m√§√§ran tulpadele muutujad
 		$stmt->bind_result($id, $emailFromDatabase, $passwordFromDatabase, $created);
 		$stmt->execute();
 		
-		//k¸sin rea andmeid
+		//k√ºsin rea andmeid
 		if($stmt->fetch()) {
 			
-			//vırdlen paroole
+			//v√µrdlen paroole
 			$hash = hash ("sha512", $password);
 			if($hash == $passwordFromDatabase) {
 				echo "kasutaja ".$id." logis sisse";

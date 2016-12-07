@@ -17,7 +17,7 @@ class Training {
 		$stmt->bind_param("ss", $exercise, $series);
 		
 		if ($stmt->execute()) {
-			echo "Salvestamine õnnestus";
+			echo "Salvestamine Ãµnnestus";
 		} else {
 			echo "ERROR".$stmt->error;
 		}
@@ -104,7 +104,7 @@ class Training {
 		//tekitan objekti
 		$person = new Stdclass();
 		
-		//saime ühe rea andmeid
+		//saime Ã¼he rea andmeid
 		if($stmt->fetch()){
 			// saan siin alles kasutada bind_result muutujaid
 			$person->exercise = $exercise;
@@ -112,9 +112,9 @@ class Training {
 			
 			
 		}else{
-			// ei saanud rida andmeid kätte
+			// ei saanud rida andmeid kÃ¤tte
 			// sellist id'd ei ole olemas
-			// see rida võib olla kustutatud
+			// see rida vÃµib olla kustutatud
 			header("Location: data.php");
 			exit();
 		}
@@ -127,10 +127,10 @@ class Training {
 		$stmt = $this->connection->prepare("UPDATE Training SET deleted=NOW() WHERE id=? AND deleted IS NULL");
 		$stmt->bind_param("i",$id);
 		
-		// kas õnnestus salvestada
+		// kas Ãµnnestus salvestada
 		if($stmt->execute()){
-			// õnnestus
-			echo "kustutamine õnnestus!";
+			// Ãµnnestus
+			echo "kustutamine Ãµnnestus!";
 		}
 		
 		$stmt->close();	
@@ -141,10 +141,10 @@ class Training {
 		$stmt = $this->connection->prepare("UPDATE Training SET exercise=?, series=? WHERE id=? AND deleted IS NULL");
 		$stmt->bind_param("ssi",$exercise, $series, $id);
 		
-		// kas õnnestus salvestada
+		// kas Ãµnnestus salvestada
 		if($stmt->execute()){
-			// õnnestus
-			echo "salvestus õnnestus!";
+			// Ãµnnestus
+			echo "salvestus Ãµnnestus!";
 		}
 		
 		$stmt->close();

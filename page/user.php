@@ -49,7 +49,7 @@
 <div align="center"><h1>Minu konto</h1>
 	<p>
 		<a href="data.php">Tagasi avalehele</a><br>
-		<a href="?logout=1">Logi v‰lja</a>
+		<a href="?logout=1">Logi v√§lja</a>
 	</p>
 </div>
 

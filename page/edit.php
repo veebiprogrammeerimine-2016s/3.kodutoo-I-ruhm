@@ -10,7 +10,7 @@
 	//kas kasutaja uuendab andmeid
 	if(isset($_POST["update"])){
 		
-		$Books->update($Helper->cleanInput($_POST["id"]), $Helper->cleanInput($_POST["exercise"]), $Helper->cleanInput($_POST["series"]));
+		$Training->update($Helper->cleanInput($_POST["id"]), $Helper->cleanInput($_POST["exercise"]), $Helper->cleanInput($_POST["series"]));
 		
 		header("Location: edit.php?id=".$_POST["id"]."&success=true");
         exit();	
@@ -38,7 +38,7 @@
 	//var_dump($c);
 	
 	if(isset($_GET["success"])){
-		//echo "Salvestamine õnnestus";
+		//echo "Salvestamine Ãµnnestus";
 	}
 	
 ?>
