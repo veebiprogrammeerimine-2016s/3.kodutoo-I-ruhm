@@ -7,7 +7,6 @@
 	require("../class/Helper.class.php");
 	$Helper = new Helper();
 	
-	//kas on sisse loginud, kui ei ole, siis suunata login lehele
 	
 	if (!isset ($_SESSION["userId"])) {
 		
@@ -15,7 +14,7 @@
 		exit();
 	}
 	
-	//kas ?logout on aadressireal
+
 	if (isset($_GET["logout"])) {
 		
 		session_destroy ();
@@ -41,19 +40,19 @@
     $favorites = $Favorite->getAllFavorites();
 	$userFavorites = $Favorite->getAllUserFavorites();
 	
-	//var_dump($userFavorites);
+
 ?>
 <?php require("../header.php"); ?>
 
 <div class "data" style="padding-left:10px;">
-<div align="center"><h1>Minu konto</h1>
+<h1><p style="color:green"><b>Minu konto</b></p></h1>
 	<p>
 		<a href="data.php">Tagasi avalehele</a><br>
 		<a href="?logout=1">Logi välja</a>
 	</p>
 </div>
 
-<h2>Tehtud harjutused</h2>
+<h2><p style="color:green">Tehtud harjutused</p></h2>
 
 <form method="POST">
 					
@@ -79,7 +78,7 @@
     
 ?>
 
-<h2>Lemmik harjutused</h2>
+<h2><p style="color:green">Lemmik harjutused</p></h2>
 <form method="POST">
 			
 <label>Harjutus</label><br>

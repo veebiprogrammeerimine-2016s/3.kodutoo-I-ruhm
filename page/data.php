@@ -79,7 +79,7 @@
 
 <div class "data" style="padding-left:10px;">
 
-<h1><p style="color:green">Andmed</p></h1>
+<h1><p style="color:green"><b>Avaleht</b></p></h1>
 	<p> 
 		Tere tulemast <a href="user.php"><?=$_SESSION["email"];?>!</a>
 		<br> <a href="?logout=1">Logi välja</a>
@@ -100,7 +100,7 @@
 
 
 
-<h2><p style="color:green">Tehtud harjutused</p></h2>
+<h2><p style="color:green"><b>Tehtud harjutused</b></p></h2>
 <form>
 	<input type="search" name="q" value="<?=$q;?>">
 	<input type="submit" value="Otsi">

@@ -28,10 +28,11 @@ class Favorite {
 	
 	function saveUserFavorite ($favorite_id) {
 		
-
+		
 		
 		$database = "if16_epals";
 		
+		//kas on juba olemas
 		$stmt = $this->connection->prepare("SELECT id FROM user_favorites WHERE user_id=? AND favorite_id=?");
 		$stmt->bind_param("ii", $_SESSION["userId"],$favorite_id);
 		$stmt->execute();
