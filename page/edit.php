@@ -1,5 +1,5 @@
 <?php
-	<body style="background-color:powderblue;">;
+
 	require("../functions.php");
 	
 	require("../class/Training.class.php");

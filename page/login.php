@@ -1,5 +1,11 @@
 <?php
 	require("../functions.php");
+	
+	require("../class/User.class.php");
+	$User = new User($mysqli);
+	
+	require("../class/Helper.class.php");
+	$Helper = new Helper();
 
 	if (isset ($_SESSION["userId"])) {
 		
@@ -90,10 +96,10 @@
 		echo "sugu ".$gender."<br>";
 		
 		
-		$signupEmail = cleanInput($signupEmail);
-		$signupPassword = cleanInput($signupPassword);
+		$signupEmail = $Helper->cleanInput($signupEmail);
+		$signupPassword = $Helper->cleanInput($signupPassword);
 		
-		signup($signupEmail, $signupPassword, $signupUsername, $gender);
+		$User->signUp($signupEmail, $signupPassword, $signupUsername, $gender);
 		}
 		
 		$error = "";
@@ -104,22 +110,16 @@
 			!empty($_POST["loginPassword"])
 		) {
 			
-			$loginEmail = cleanInput($loginEmail);
-			$loginPassword = cleanInput($_POST["loginPassword"]);
-			
-			//login sisse
-			$error = login($_POST["loginEmail"], $loginPassword);
+				$error = $User->login($Helper->cleanInput($_POST["loginEmail"]), $Helper->cleanInput($_POST["loginPassword"]));
+
 			
 		}
 		
 ?>
 
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Sisselogimise lehekülg</title>
-	</head>
-	<body>
+<?php require("../header.php"); ?>
+
+<div class "edit" style="padding-left:40px;">
 
 		<h1>Logi sisse</h1>
 
@@ -182,6 +182,6 @@
 		
 		</form>
 		
-	</body>
-
-</html>
+</div>
+		
+<?php require("../footer.php"); ?>
