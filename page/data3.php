@@ -15,7 +15,7 @@ $clubLocation = "";
 $clubNameError = "";
 $clubLocationError = "";
 $rate = "";
-$Helper = "";
+// $Helper = "";
 
 if (!isset($_SESSION["userId"])){
 
@@ -46,11 +46,11 @@ if ( isset($_POST["clubName"]) &&
 		 isset($_POST["clubName"]) &&
 		 !empty($_POST["clubLocation"]) &&
 		 !empty($_POST["clubLocation"]) &&
-     !empty ($_POST["clubRate"]) &&
-     !empty ($_POST["clubRate"])
+     !empty ($_POST["rate"]) &&
+     !empty ($_POST["rate"])
    ) {
 
-		$Club->save($Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"]), $Helper->cleanInput($_POST["clubRate"]));
+		$Club->save($Helper->cleanInput($_POST["clubName"]), $Helper->cleanInput($_POST["clubLocation"]), $Helper->cleanInput($_POST["rate"]));
 	}
 
 
