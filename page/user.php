@@ -73,7 +73,7 @@ body:before {
 
 </style>
 </head>
-<h1><a href="data.php"> < tagasi</a><p>User account</h1>
+<h1><a href="data.php"> < Back</a><p>User account</h1>
 <?=$msg;?>
 <p>
 	Welcome <?=$_SESSION["userEmail"];?>!
@@ -104,7 +104,7 @@ body:before {
 	<label>Form of art</label><br>
 	<input name="interest" type="text">
 	
-	<input type="submit" value="Salvesta">
+	<input type="submit" value="Save">
 	
 </form>
 
@@ -132,6 +132,6 @@ body:before {
     </select>
     	
 	
-	<input type="submit" value="Lisa">
+	<input type="submit" value="Add">
 	
 </form>

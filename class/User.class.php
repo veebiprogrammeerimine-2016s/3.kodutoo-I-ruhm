@@ -66,13 +66,13 @@ class User {
 		
 	}
 	
-	function signUp ($email, $password) {
+	function signUp ($email, $password, $nickname) {
 		
-		$stmt = $this->connection->prepare("INSERT INTO user_sample (email, password) VALUES (?, ?)");
+		$stmt = $this->connection->prepare("INSERT INTO user_sample (email, password, nickname) VALUES (?, ?, ?)");
 	
 		echo $this->connection->error;
 		
-		$stmt->bind_param("ss", $email, $password);
+		$stmt->bind_param("sss", $email, $password, $nickname);
 		
 		if($stmt->execute()) {
 			echo "success";

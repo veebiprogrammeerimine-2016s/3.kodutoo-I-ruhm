@@ -444,8 +444,8 @@ h3   {color: black;
 	foreach($finishData as $f){
 		
 		
-		$listHtml .= "<h1 style='country:".$f->finishCountry."'>".$f->birthday."</h1>";
-		$listHtml .= "<p>birthday = ".$f->finishCountry."</p>";
+		$listHtml .= "<h1>".$f->birthday."</h1>";
+		$listHtml .= "<p>birthday = ".$f->country."</p>";
 	}
 	
 	//echo $listHtml;
