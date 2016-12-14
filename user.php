@@ -3,7 +3,7 @@
  	require("functions.php");
 	
 	require("Pillid.class.php");
-	$pillid = new pillid($mysqli);
+	$Pillid = new Pillid($mysqli);
 
  	//kui ei ole kasutaja id'd
  	if (!isset($_SESSION["userId"])){
@@ -35,7 +35,7 @@
 	//kas kasutaja uuendab andmeid
 	if(isset($_POST["update"])){
 		
-		$pillid->updateInstrument(($_POST["instrument"]));
+		$Pillid->updateInstrument(($_POST["instrument"]));
 		
 		//header("Location: user.php");
 		//header("Location: data.php?instrument".$_POST["instrument"]);

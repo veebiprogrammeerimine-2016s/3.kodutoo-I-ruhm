@@ -125,14 +125,27 @@ class Pillid {
 			// õnnestus
 			echo "salvestus õnnestus!";
 		}
-		
 		$stmt->close();
 	
 		
 	}
 	
 	
-	function get($q) {
+	function get($q, $sort, $order) {
+		
+		$allowedSort = ["age", "instrument"];
+ 		$instruments = array();
+ 		if(!in_array($sort, $allowedSort)){
+ 			// ei ole lubatud tulp
+ 			$sort = "age";
+ 		}
+ 		
+ 		$orderBy = "ASC";
+ 		
+ 		if ($order == "DESC") {
+ 			$orderBy = "DESC";
+ 		}
+ 		echo "Sorteerin: ".$sort." ".$orderBy." ";
  		
  		//kas otsib
  		if ($q != "") {
@@ -140,28 +153,58 @@ class Pillid {
  			echo "Otsib: ".$q;
  			
  			$stmt = $this->connection->prepare("
- 				SELECT gender,instrument
+ 				SELECT instrument
  				FROM signup
  				WHERE deleted IS NULL 
- 				AND (gender LIKE ? OR age LIKE ? OR instrument LIKE ?)
+ 				AND (gender LIKE ? OR instrument LIKE ?)
+				ORDER BY $sort $orderBy
  			");
  			$searchWord = "%".$q."%";
- 			$stmt->bind_param("sss",$searchWord, $searchWord, $searchWord);
+			var_dump ($searchWord);
+ 			$stmt->bind_param("ss",$searchWord, $searchWord);
  			
  		} else {
  			
  			$stmt = $this->connection->prepare("
- 				SELECT gender, age, instrument
+ 				SELECT instrument
  				FROM signup
  				WHERE deleted IS NULL
+				ORDER BY $sort $orderBy
  			");
  			
 			}
- 		
+ 		echo $this->connection->error;
+		
+		$stmt->bind_result($instrument);
+		$stmt->execute();
+		
+		while ($stmt->fetch()) {
+			
+			//tekitan objekti
+			$result = new StdClass();
+			
+			$result->instrument = $instrument;
+	
+			
+			//echo $plate."<br>";
+			// iga kord massiivi lisan juurde nr märgi
+			array_push($instruments, $result);
+		}
+		
+		$stmt->close();
+		
+		
+		return $instruments;
+	}
+		
+		
+		
+		
+
 	
 	
 	
-}
+
 
 
 }

@@ -6,7 +6,34 @@
 	require("Pillid.class.php");
 	$Pillid = new Pillid($mysqli);
 	
-	$instrumentData = getAllInstruments();
+	
+	if (isset($_GET["q"]) && $_GET["q"]!=""){
+		
+		if(isset($_GET["sort"])){
+			
+			$sort = $_GET["sort"];
+		}else{
+			$sort = "ASC";
+			
+		}
+			if(isset($_GET["order"])){
+			
+			$order = $_GET["order"];
+		}else{
+			$order = "age";
+			
+		}$instrumentData = $Pillid->get($_GET["q"],$sort,$order);
+		
+		
+		
+		
+	}else{$instrumentData = getAllInstruments();
+		
+		
+	};
+	
+	 	
+
 	
 	
 	
@@ -48,8 +75,12 @@
  		$q = "";
  	}
  	
+	
+ 	
+
+	
  	//otsisõna fn sisse
- 	$PillidData = $Pillid->get($q);
+ 	$PillidData = $Pillid->get($q, $sort, $order);
 	
 ?>
 
@@ -78,16 +109,16 @@ $html = "<table>";
 		$html .= "<th>gender</th>";
 		$html .= "<th>instrument</th>";
 	$html .= "</tr>";
-	
+
 	//iga liikme kohta massiivis
 	foreach($instrumentData as $c){
 		// iga kasutaja on $c
 		//echo $c->age."<br>";
 		
 		$html .= "<tr>";
-			$html .= "<td>".$c->age."</td>";
-			$html .= "<td>".$c->gender."</td>";
-			$html .= "<td>".$c->instrument."</td>";
+			//$html .= "<td>".$c->age."</td>";
+			//$html .= "<td>".$c->gender."</td>";
+					$html .= "<td>".$c->instrument."</td>";
 			
 		$html .= "</tr>";
 	}
@@ -98,6 +129,34 @@ $html = "<table>";
 	
 	
 	$listHtml = "<br><br>";
+	
+	
+ 		$ageOrder = "ASC";
+ 		$arrow = "&darr;";
+ 		if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+ 			$ageOrder = "DESC";
+ 			$arrow = "&uarr;";
+ 		}
+ 	
+ 	$html .= "<th>
+ 					<a href='?q=".$q."&sort=age&order=".$ageOrder."'>
+ 						age ".$arrow."
+ 					</a>
+ 				 </th>";
+ 				 
+ 				 
+ 		$instrumentOrder = "ASC";
+ 		$arrow = "&darr;";
+ 		if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+ 			$instrumentOrder = "DESC";
+ 			$arrow = "&uarr;";
+ 		}
+ 		$html .= "<th>
+ 					<a href='?q=".$q."&sort=instrument&order=".$instrumentOrder."'>
+ 						instrument
+ 					</a>
+ 				 </th>";
+  	$html .= "</tr>";
 	
 	
 	
