@@ -109,16 +109,16 @@ $html = "<table>";
 		$html .= "<th>gender</th>";
 		$html .= "<th>instrument</th>";
 	$html .= "</tr>";
-
+	
 	//iga liikme kohta massiivis
 	foreach($instrumentData as $c){
 		// iga kasutaja on $c
 		//echo $c->age."<br>";
 		
 		$html .= "<tr>";
-			//$html .= "<td>".$c->age."</td>";
-			//$html .= "<td>".$c->gender."</td>";
-					$html .= "<td>".$c->instrument."</td>";
+			$html .= "<td>";
+			$html .= "<td>";
+			$html .= "<td>".$c->instrument."</td>";
 			
 		$html .= "</tr>";
 	}

@@ -145,7 +145,7 @@ class Pillid {
  		if ($order == "DESC") {
  			$orderBy = "DESC";
  		}
- 		echo "Sorteerin: ".$sort." ".$orderBy." ";
+ 		//echo "Sorteerin: ".$sort." ".$orderBy." ";
  		
  		//kas otsib
  		if ($q != "") {
@@ -160,7 +160,6 @@ class Pillid {
 				ORDER BY $sort $orderBy
  			");
  			$searchWord = "%".$q."%";
-			var_dump ($searchWord);
  			$stmt->bind_param("ss",$searchWord, $searchWord);
  			
  		} else {
@@ -184,6 +183,7 @@ class Pillid {
 			$result = new StdClass();
 			
 			$result->instrument = $instrument;
+			
 	
 			
 			//echo $plate."<br>";
