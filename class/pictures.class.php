@@ -62,7 +62,7 @@
 				");
 
 				$searchWord = "%".$q."%";
-				$stmt->bind_param("ss", $searchWord, $searchWord);
+				$stmt->bind_param("sss", $searchWord, $searchWord, $searchWord);
 			
 			}else{
 				//ei otsi
