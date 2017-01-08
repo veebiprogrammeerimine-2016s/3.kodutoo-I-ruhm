@@ -153,7 +153,7 @@ class Pillid {
  			echo "Otsib: ".$q;
  			
  			$stmt = $this->connection->prepare("
- 				SELECT instrument
+ 				SELECT instrument, gender, age
  				FROM signup
  				WHERE deleted IS NULL 
  				AND (gender LIKE ? OR instrument LIKE ?)
@@ -165,7 +165,7 @@ class Pillid {
  		} else {
  			
  			$stmt = $this->connection->prepare("
- 				SELECT instrument
+ 				SELECT instrument, gender, age
  				FROM signup
  				WHERE deleted IS NULL
 				ORDER BY $sort $orderBy
@@ -174,7 +174,7 @@ class Pillid {
 			}
  		echo $this->connection->error;
 		
-		$stmt->bind_result($instrument);
+		$stmt->bind_result($instrument, $gender, $age);
 		$stmt->execute();
 		
 		while ($stmt->fetch()) {
@@ -183,6 +183,8 @@ class Pillid {
 			$result = new StdClass();
 			
 			$result->instrument = $instrument;
+			$result->age = $age;
+			$result->gender = $gender;
 			
 	
 			

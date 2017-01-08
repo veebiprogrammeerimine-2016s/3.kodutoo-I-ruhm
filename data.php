@@ -7,36 +7,6 @@
 	$Pillid = new Pillid($mysqli);
 	
 	
-	if (isset($_GET["q"]) && $_GET["q"]!=""){
-		
-		if(isset($_GET["sort"])){
-			
-			$sort = $_GET["sort"];
-		}else{
-			$sort = "ASC";
-			
-		}
-			if(isset($_GET["order"])){
-			
-			$order = $_GET["order"];
-		}else{
-			$order = "age";
-			
-		}$instrumentData = $Pillid->get($_GET["q"],$sort,$order);
-		
-		
-		
-		
-	}else{$instrumentData = getAllInstruments();
-		
-		
-	};
-	
-	 	
-
-	
-	
-	
 	//kui ei ole kasutaja id'd
 	if (!isset($_SESSION["userId"])){
 		
@@ -75,7 +45,30 @@
  		$q = "";
  	}
  	
-	
+	if (isset($_GET["q"]) && $_GET["q"]!=""){
+		
+		if(isset($_GET["sort"])){
+			
+			$sort = $_GET["sort"];
+		}else{
+			$sort = "ASC";
+			
+		}
+			if(isset($_GET["order"])){
+			
+			$order = $_GET["order"];
+		}else{
+			$order = "age";
+			
+		}$instrumentData = $Pillid->get($_GET["q"],$sort,$order);
+		
+		
+		
+		
+	}else{$instrumentData = getAllInstruments();
+		
+		
+	};
  	
 
 	
@@ -116,8 +109,8 @@ $html = "<table>";
 		//echo $c->age."<br>";
 		
 		$html .= "<tr>";
-			$html .= "<td>";
-			$html .= "<td>";
+			$html .= "<td>".$c->age."</td>";
+			$html .= "<td>".$c->gender."</td>";
 			$html .= "<td>".$c->instrument."</td>";
 			
 		$html .= "</tr>";
