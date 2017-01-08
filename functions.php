@@ -144,31 +144,5 @@ require("../../config.php");
 		
 	}
 	
-	function get($q) {
- 		
- 		//kas otsib
- 		if ($q != "") {
- 			
- 			echo "Otsib: ".$q;
- 			
- 			$stmt = $this->connection->prepare("
- 				SELECT id, plate, color
- 				FROM signup
- 				WHERE deleted IS NULL 
- 				AND (plate LIKE ? OR color LIKE ?)
- 			");
- 			$searchWord = "%".$q."%";
- 			$stmt->bind_param("ss", $searchWord, $searchWord);
- 			
- 		} else {
- 			
- 			$stmt = $this->connection->prepare("
- 				SELECT id, plate, color
- 				FROM signup
- 				WHERE deleted IS NULL
- 			");
- 			
- 		}
-	}
-	
+
 ?>

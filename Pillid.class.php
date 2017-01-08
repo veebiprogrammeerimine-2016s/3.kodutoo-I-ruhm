@@ -133,8 +133,8 @@ class Pillid {
 	
 	function get($q, $sort, $order) {
 		
-		$allowedSort = ["age", "instrument"];
- 		$instruments = array();
+		$allowedSort = ["age", "gender", "instrument"];
+ 		
  		if(!in_array($sort, $allowedSort)){
  			// ei ole lubatud tulp
  			$sort = "age";
@@ -143,9 +143,9 @@ class Pillid {
  		$orderBy = "ASC";
  		
  		if ($order == "DESC") {
- 			$orderBy = "DESC";
+				$orderBy = "DESC";
  		}
- 		//echo "Sorteerin: ".$sort." ".$orderBy." ";
+ 		echo "Sorteerin: ".$sort." ".$orderBy." ";
  		
  		//kas otsib
  		if ($q != "") {
@@ -177,14 +177,17 @@ class Pillid {
 		$stmt->bind_result($instrument, $gender, $age);
 		$stmt->execute();
 		
+		
+		$instruments = array();
+		
 		while ($stmt->fetch()) {
 			
 			//tekitan objekti
 			$result = new StdClass();
 			
 			$result->instrument = $instrument;
-			$result->age = $age;
 			$result->gender = $gender;
+			$result->age = $age;
 			
 	
 			

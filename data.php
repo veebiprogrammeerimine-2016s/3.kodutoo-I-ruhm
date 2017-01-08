@@ -73,7 +73,7 @@
 
 	
  	//otsisõna fn sisse
- 	$PillidData = $Pillid->get($q, $sort, $order);
+ 	$InstrumentData = $Pillid->get($q, $sort, $order);
 	
 ?>
 
@@ -98,10 +98,52 @@
 $html = "<table>";
 	
 	$html .= "<tr>";
-		$html .= "<th>age</th>";
-		$html .= "<th>gender</th>";
-		$html .= "<th>instrument</th>";
+		
+		
+		
 	$html .= "</tr>";
+	
+	$ageOrder = "ASC";
+ 	$arrow = "&darr;";
+ 	if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+ 			$ageOrder = "DESC";
+ 			$arrow = "&uarr;";
+ 		}
+ 	
+ 	$html .= "<th>
+ 					<a href='?q=".$q."&sort=age&order=".$ageOrder."'>
+ 						age ".$arrow."
+ 					</a>
+ 				 </th>";
+	
+	$genderOrder = "ASC";
+ 	$arrow = "&darr;";
+ 	if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+ 			$genderOrder = "DESC";
+ 			$arrow = "&uarr;";
+ 		}
+ 	
+	
+
+ 	$html .= "<th>
+ 					<a href='?q=".$q."&sort=gender&order=".$genderOrder."'>
+ 						gender ".$arrow."
+ 					</a>
+ 				 </th>";
+ 				 
+ 				 
+ 	$instrumentOrder = "ASC";
+ 	$arrow = "&darr;";
+ 	if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
+ 			$instrumentOrder = "DESC";
+ 			$arrow = "&uarr;";
+ 		}
+ 	$html .= "<th>
+ 					<a href='?q=".$q."&sort=instrument&order=".$instrumentOrder."'>
+ 						instrument
+ 					</a>
+ 				 </th>";
+				
 	
 	//iga liikme kohta massiivis
 	foreach($instrumentData as $c){
@@ -123,35 +165,7 @@ $html = "<table>";
 	
 	$listHtml = "<br><br>";
 	
-	
- 		$ageOrder = "ASC";
- 		$arrow = "&darr;";
- 		if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
- 			$ageOrder = "DESC";
- 			$arrow = "&uarr;";
- 		}
- 	
- 	$html .= "<th>
- 					<a href='?q=".$q."&sort=age&order=".$ageOrder."'>
- 						age ".$arrow."
- 					</a>
- 				 </th>";
- 				 
- 				 
- 		$instrumentOrder = "ASC";
- 		$arrow = "&darr;";
- 		if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
- 			$instrumentOrder = "DESC";
- 			$arrow = "&uarr;";
- 		}
- 		$html .= "<th>
- 					<a href='?q=".$q."&sort=instrument&order=".$instrumentOrder."'>
- 						instrument
- 					</a>
- 				 </th>";
-  	$html .= "</tr>";
-	
-	
+
 	
 ?>
 </body>
