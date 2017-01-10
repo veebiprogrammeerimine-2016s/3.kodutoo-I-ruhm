@@ -44,36 +44,19 @@
  		// otsisõna tühi
  		$q = "";
  	}
- 	
-	if (isset($_GET["q"]) && $_GET["q"]!=""){
-		
-		if(isset($_GET["sort"])){
-			
+ 	$sort = "age";
+	$order = "ASC";
+	
+	if(isset($_GET["sort"]) && isset($_GET["order"])){
 			$sort = $_GET["sort"];
-		}else{
-			$sort = "ASC";
-			
-		}
-			if(isset($_GET["order"])){
-			
 			$order = $_GET["order"];
-		}else{
-			$order = "age";
-			
-		}$instrumentData = $Pillid->get($_GET["q"],$sort,$order);
-		
-		
-		
-		
-	}else{$instrumentData = getAllInstruments();
-		
-		
-	};
+	}
+	
  	
 
 	
  	//otsisõna fn sisse
- 	$InstrumentData = $Pillid->get($q, $sort, $order);
+ 	$instruments = $Pillid->get($q, $sort, $order);
 	
 ?>
 
@@ -146,7 +129,7 @@ $html = "<table>";
 				
 	
 	//iga liikme kohta massiivis
-	foreach($instrumentData as $c){
+	foreach($instruments as $c){
 		// iga kasutaja on $c
 		//echo $c->age."<br>";
 		

@@ -112,13 +112,9 @@ class Pillid {
 	
 	
 	function deleteInstrument($id){
-    	
-        $database = "if16_jant";
-		
-		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 		
 		$stmt = $mysqli->prepare("UPDATE signup SET deleted=NOW() WHERE id=? AND deleted IS NULL");
-		$stmt->bind_param("i",$_SESSION["userId"]);
+		$stmt->bind_param("i",$id);
 		
 		// kas õnnestus salvestada
 		if($stmt->execute()){
@@ -145,7 +141,7 @@ class Pillid {
  		if ($order == "DESC") {
 				$orderBy = "DESC";
  		}
- 		echo "Sorteerin: ".$sort." ".$orderBy." ";
+ 		//echo "Sorteerin: ".$sort." ".$orderBy." ";
  		
  		//kas otsib
  		if ($q != "") {
@@ -153,7 +149,7 @@ class Pillid {
  			echo "Otsib: ".$q;
  			
  			$stmt = $this->connection->prepare("
- 				SELECT instrument, gender, age
+ 				SELECT age, gender, instrument
  				FROM signup
  				WHERE deleted IS NULL 
  				AND (gender LIKE ? OR instrument LIKE ?)
@@ -165,7 +161,7 @@ class Pillid {
  		} else {
  			
  			$stmt = $this->connection->prepare("
- 				SELECT instrument, gender, age
+ 				SELECT age, gender, instrument
  				FROM signup
  				WHERE deleted IS NULL
 				ORDER BY $sort $orderBy
@@ -174,7 +170,7 @@ class Pillid {
 			}
  		echo $this->connection->error;
 		
-		$stmt->bind_result($instrument, $gender, $age);
+		$stmt->bind_result($age, $gender, $instrument);
 		$stmt->execute();
 		
 		
@@ -185,9 +181,9 @@ class Pillid {
 			//tekitan objekti
 			$result = new StdClass();
 			
-			$result->instrument = $instrument;
-			$result->gender = $gender;
 			$result->age = $age;
+			$result->gender = $gender;
+			$result->instrument = $instrument;
 			
 	
 			
