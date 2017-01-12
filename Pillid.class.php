@@ -90,9 +90,8 @@ class Pillid {
 		
 	}
 	function updateInstrument($instrument){
-    	
-        $database = "if16_jant";
 		
+    	$database = "if16_jant";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 		
 		$stmt = $mysqli->prepare("UPDATE signup SET instrument =? WHERE id=? AND deleted IS NULL");
@@ -111,10 +110,13 @@ class Pillid {
 	}
 	
 	
-	function deleteInstrument($id){
+	function deleteInstrument($instrument){
 		
+		$database = "if16_jant";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+    			
 		$stmt = $mysqli->prepare("UPDATE signup SET deleted=NOW() WHERE id=? AND deleted IS NULL");
-		$stmt->bind_param("i",$id);
+		$stmt->bind_param("si",$instrument,$_SESSION["userId"]);
 		
 		// kas õnnestus salvestada
 		if($stmt->execute()){

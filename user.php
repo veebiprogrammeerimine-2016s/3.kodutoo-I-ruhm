@@ -23,10 +23,10 @@
  	}
  	
 
-	if(isset($_GET["delete"]) && isset($_GET["id"])) {
+	if(isset($_GET["delete"])) {
 		// kustutan
 		
-		deleteInstrument(cleanInput($_GET["id"]));
+		deleteInstrument(cleanInput($_GET["instrument"]));
 		header("Location: data.php");
 		exit();
 	}
@@ -68,4 +68,4 @@
   
  <br>
  <br>
- <a href="?id=<?=$_GET["id"];?>&delete=true">Kustuta</a>
+ <a href="?id=<?=$_GET["instrument"];?>&delete=true">Kustuta</a>

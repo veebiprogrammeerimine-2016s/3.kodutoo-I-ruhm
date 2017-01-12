@@ -31,6 +31,7 @@
 	//var_dump($_POST);
 	
 	//Muutujad
+	$LoginEmail = "";
 	$error = "";
 	$signupEmailError = "";
 	$signupPasswordError = "";
@@ -189,10 +190,9 @@
 	<h1>Logi sisse</h1>
 	<form method="POST">
 		<p style="color:red;"><?=$error;?></p>
-		<label>E-post</label>
-		<br>
 		
-		<input name="LoginEmail" type="text">
+		<input name="LoginEmail" type="text" placeholder = "Email" value= "<?=$LoginEmail;?>">
+  
 		<br><br>
 		
 		<input type="password" name="LoginPassword" placeholder="Parool">
@@ -209,7 +209,7 @@
 		<label>E-post</label>
 		<br>
 		
-		<input name="signupEmail" type="email" value="<?php echo $signupEmail;?>"
+		<input name="signupEmail" type="email" placeholder = "Email" value= "<?=$signupEmail;?>"> <?php echo $signupEmailError; ?>
 		<br><br>
 		
 		<input type="password" name="signupPassword" placeholder="Parool"> <?php echo $signupPasswordError; ?>
