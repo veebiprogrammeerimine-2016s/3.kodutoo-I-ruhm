@@ -30,10 +30,9 @@ class Club {
 		$allowedSort = ["id", "clubName", "clubLocation", "clubRate"];
 		if (!in_array ($sort, $allowedSort)) {
 			//kui ei ole lubatud tulp, siis sorteerib id järgi
-			$sort = "id";
+			$sort = "rate";
 
 		}
-
 
 		$orderBy = "ASC";
 
@@ -43,7 +42,7 @@ class Club {
 
 	 }
 
-	 echo "Sorteerin: ".$sort. " ".$orderBy." ";
+	 //echo "Sorteerin: ".$sort. " ".$orderBy." ";
 
 		//kas otsib
 		if ($q != "") {
@@ -59,7 +58,7 @@ class Club {
 			");
 
 			$searchWord = "%".$q. "%";
-			$stmt->bind_param("ss", $searchWord, $searchWord);
+			$stmt->bind_param("sss",  $searchWord, $searchWord);
 
 		}else {
 
@@ -74,8 +73,6 @@ class Club {
 		}
 
 		echo $this->connection->error;
-
-
 		$stmt->bind_result($id, $clubName, $clubLocation, $clubRate);
 		$stmt->execute();
 
@@ -109,7 +106,7 @@ class Club {
 	function getSingle($edit_id){
 		$stmt = $this->connection->prepare("SELECT clubName, clubLocation, clubRate FROM goingClubbing WHERE id=? AND deleted IS NULL");
 		$stmt->bind_param("i", $edit_id);
-		$stmt->bind_result($name, $location, $rate);
+		$stmt->bind_result($name, $location, $clubRate);
 		$stmt->execute();
 
 		//tekitan objekti
@@ -120,7 +117,7 @@ class Club {
 			// saan siin alles kasutada bind_result muutujaid
        $club->clubName = $name;
        $club->clubLocation = $location;
-       $club->clubRate = $rate;
+       $club->clubRate = $clubRate;
 
 
 
@@ -158,15 +155,17 @@ class Club {
 
 	}
 
-	function update($id, $clubName, $clubLocation, $clubRate){
+
+	function update ( $clubName, $clubLocation, $rate = '1, 2, 3, 4, 5'){
 
 		$stmt = $this->connection->prepare("UPDATE goingClubbing SET clubName=?, clubLocation=?, clubRate=? WHERE id=? AND deleted IS NULL");
-		$stmt->bind_param("ssi",$clubName, $clubLocation, $clubRate);
+		echo $this->connection->error;
+		$stmt->bind_param("ssi", $clubName, $clubLocation, $clubRate);
 
 		// kas õnnestus salvestada
 		if($stmt->execute()){
 			// õnnestus
-			echo "salvestus õnnestus!";
+			echo "Salvestamine õnnestus!";
 		}
 
 		$stmt->close();
@@ -175,4 +174,5 @@ class Club {
 	}
 
 }
-?>
+
+ ?>

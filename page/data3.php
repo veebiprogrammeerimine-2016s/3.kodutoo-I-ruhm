@@ -2,6 +2,7 @@
 
   require ("../functions.php");
   require ("../class/Club.class.php");
+
   $Club = new Club ($mysqli);
 
   require("../class/Helper.class.php");
@@ -78,7 +79,7 @@ $sort = "id";
 ?>
 
 <?php require("../header.php"); ?>
-<h1> Andmed </h1>
+
 <?=$msg;?>
 
 <p>
@@ -87,15 +88,17 @@ $sort = "id";
 </p>
 
 
-<h1> Anna hinnang klubile </h1>
+<h2> Hinda klubi </h2>
 
 <form method = "POST">
 
   <label> Kirjuta klubi nimi: </label>
+  <br>
   <input name ="clubName" type = "text" placeholder="Klubi nimi"> <?php echo $clubNameError; ?>
 
   <br> <br>
   <label> Kirjuta klubi asukoht: </label>
+  <br>
 
   <input  name = "clubLocation" type = "text" placeholder="Linn"> <?php echo $clubLocationError; ?>
 
@@ -133,7 +136,7 @@ $sort = "id";
         <input type="radio" name="rate" value="5" > 5<br><br>
         <?php } ?>
 
-  <input type = "submit"  value = "SALVESTA HINNANG">
+  <input type = "submit"  value = "SALVESTA">
 
 </form>
 
@@ -151,18 +154,17 @@ $sort = "id";
 
 $html = "<table class='table table-striped'>";
 
-$html .= "<tr>";
 
-    $idOrder = "ASC";
+    $rateOrder = "ASC";
     $arrow = "&darr;";
+
     if (isset($_GET["order"]) && $_GET["order"] == "ASC"){
-         $idOrder = "DESC";
+         $rateOrder = "DESC";
          $arrow = "&uarr;";
       }
 
       $html .= "<th>
-            <a href='?q=".$q."&sort=id&order=".$idOrder."'>
-
+            <a href='?q=".$q."&sort=id&order=".$rateOrder."'>
               id ".$arrow."
               </a>
             </th>";
@@ -174,33 +176,35 @@ $html .= "<tr>";
      			$arrow = "&uarr;";
 
      }
+
+
      $html .= "<th>
-     					<a href='?q=".$q."&sort=rate&order=".$rateOrder."'>
-     						rate
+     					<a '?q=".$q."&sort=name&order=".$rateOrder."'>
+     						KLUBI NIMI
      					</a>
      				</th>";
      $html .= "<th>
-     					<a href='?q=".$q."&sort=name'>
-     						name
+     					<a '?q=".$q."&sort=n'>
+     						ASUKOHT
      					</a>
      				 </th>";
+    $html .= "<th>
+             		<a '?q=".$q."&sort=rate&order=".$rateOrder."'>
+             				HINNANG
+             					</a>
+             				</th>";
 $html .= "</tr>";
 
-$html .= "<th>KLUBI</th>";
-$html .= "<th>ASUKOHT</th>";
-$html .= "<th>HINNANG</th>";
 
 //iga liikme kohta massiivis
 
 foreach($clubData as $c){
          		// iga klubi on $c
-         		//echo $c->name."<br>";
+         	//	echo $c->name."<br>";
 
 $html .= "<tr>";
-      $html .= "<td>".$c->id."</td>";
-      $html .= "<td>".$c->clubName."</td>";
-      $html .= "<td>".$c->clubLocation."</td>";
       $html .= "<td>".$c->clubRate."</td>";
+
       $html .= "</tr>";
 
       if ($c->clubRate == 1) {
@@ -218,65 +222,23 @@ $html .= "<tr>";
       }
       if ($c->clubRate == 5) {
         $html .= "<td style=' background-color: lime; '>".$c->clubRate."</td>";
+
       }
-      $html .= "<td><a class='btn btn-default btn-sm' href='edit.php?id=".$c->id."'><span class='glyphicon glyphicon-pencil'></span> Muuda</a></td>";
+
     }
 
-  $html .= "</table>";
-
-    echo $html;
-
-  $listHtml = "<br><br>";
 
   foreach($clubData as $c){
 
-         		$listHtml .= "<h1 style='color:".$c->clubRate."'>".$c->clubName."</h1>";
-         		$listHtml .= "<p>color = ".$c->clubRate."</p>";
-
-         	}
-
-
-echo $listHtml;
-?>
-
-         <br>
-         <br>
-         <br>
-         <br>
-         <br>
-
-
-
-<?php
-
-//
-// 				$html .= "<td>".$p->clubName."</td>";
-// 				$html .= "<td>".$p->clubLocation."</td>";
-//
-//         if ($p->rate == 1) {
-//         $html .= "<td style=' background-color: red; '>".$p->rate."</td>";
-//         }
-//
-//         if ($p->rate == 2) {
-//           $html .= "<td style=' background-color: salmon; '>".$p->rate."</td>";
-//         }
-//
-//         if ($p->rate == 3) {
-//           $html .= "<td style=' background-color: pink; '>".$p->rate."</td>";
-//         }
-//
-//         if ($p->rate == 4) {
-//           $html .= "<td style=' background-color: thistle; '>".$p->rate."</td>";
-//         }
-//
-//         if ($p->rate == 5) {
-//           $html .= "<td style=' background-color: lime; '>".$p->rate."</td>";
-//         }
-//
-//
-// 			$html .= "</tr>";
-//
-//
-// 	$html .= "</table>";
-// echo $html;
+    		$html .= "<tr>";
+    			$html .= "<td>".$c->id."</td>";
+    			$html .= "<td>".$c->clubName."</td>";
+    			$html .= "<td>".$c->clubLocation."</td>";
+    			$html .= "<td>".$c->clubRate."</td>";
+    			$html .= "<td><a href='edit.php?id=".$c->id."'>Muuda</a></td>";
+    		$html .= "</tr>";
+    	}
+    	$html .= "</table>";
+    	echo $html;
+    	$listHtml = "<br><br>";
 ?>

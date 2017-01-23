@@ -260,12 +260,14 @@ if ( isset ($_POST ["loginEmail"]) &&
                <?php } ?>
                <input type = "submit" value = "REGISTREERU">
           </form>
+
         </div>
+        <p> Wanna go clubbing? Can't find a proper place? Me aitame Sind! ClubOGo aitab valida klubide seast <br>
+          külastajate
+          hinnangutele tuginedes selle õige. Et ükski pilet poleks "waste of money". Liitu kohe!</p>
       </div>
 </div>
 
 
-<p> Wanna go clubbing? Can't find a proper place? Me aitame Sind! ClubOGo aitab valida klubide seast <br>
-  külastajate
-  hinnangutele tuginedes selle õige. Et ükski pilet poleks "waste of money". Liitu kohe!</p>
+
 <?php require("../footer.php"); ?>
